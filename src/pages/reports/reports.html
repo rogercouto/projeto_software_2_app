@@ -1,0 +1,58 @@
+<!--
+  Generated template for the ReportsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Relatos</ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content>
+    <div padding>
+        <ion-segment [(ngModel)]="sel">
+          <ion-segment-button value="mines">
+            Meus
+          </ion-segment-button>
+          <ion-segment-button value="all">
+            Todos
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      
+      <div [ngSwitch]="sel">
+        <ion-list *ngSwitchCase="'mines'">
+            <button ion-item (click)="openDetails()">
+                <ion-icon name="bulb" item-start></ion-icon>
+              <h2>Lampada quebrada</h2>
+              <p>Rua Francisco Giuliani, 121</p>
+              <p>Situação: Em andamento</p>
+            </button>
+            <button ion-item>
+                <ion-icon name="medkit" item-start></ion-icon>
+              <h2>Foco de dengue</h2>
+              <p>Rua João Otto Friedrich</p>
+              <p>Situação: Fechada em 01/08/2018</p>
+            </button>
+        </ion-list>
+        <ion-list *ngSwitchCase="'all'">
+            <button ion-item>
+                <ion-icon name="help" item-start></ion-icon>
+                ...
+              </button>
+              <button ion-item>
+                <ion-icon name="alert" item-start></ion-icon>
+                <h2>Outro</h2>
+                <p>Poblema não listado</p>
+              </button>
+        </ion-list>
+      </div>
+    <ion-fab right bottom>
+      <button ion-fab color="primary"><ion-icon name="send"></ion-icon></button>
+    </ion-fab>
+</ion-content>

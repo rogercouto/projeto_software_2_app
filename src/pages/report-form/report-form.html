@@ -1,0 +1,35 @@
+<!--
+  Generated template for the ReportFormPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Enviar relato</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <p>Descrição</p>
+  <ion-item>
+    <ion-label floating>Detalhes do problema</ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+  <br/>
+  <ion-card>
+      <p *ngIf="photo()==null">Foto:</p>
+      <div>
+          <img class="rep-photo" *ngIf="photo()!=null" src="{{photo()}}"/>
+      </div>
+      <ion-card-content>
+        <div class="rep-camera">
+          <button ion-button color="secondary" round ion-end><ion-icon name="camera"></ion-icon></button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  <button ion-button secondary block><ion-icon name="send">Enviar relato&nbsp;</ion-icon></button>
+</ion-content>

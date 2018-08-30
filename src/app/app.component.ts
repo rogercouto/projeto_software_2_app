@@ -3,8 +3,8 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { HomePage, LoginPage, ReportPage, ReportsPage,
+   MessagesPage, NotificationsPage } from '../pages';
 
 @Component({
   templateUrl: 'app.html'
@@ -12,17 +12,19 @@ import { ListPage } from '../pages/list/list';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = LoginPage;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{title: string, icon:string, component: any, notifications: number}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
+      { title: 'Início', icon: 'home', component: HomePage, notifications: 0 },
+      { title: 'Relatar problema', icon: 'send', component: ReportPage, notifications: 0 },
+      { title: 'Relatos', icon: 'albums', component: ReportsPage, notifications: 2 },
+      { title: 'Mensagens', icon: 'text', component: MessagesPage, notifications: 3 }
     ];
 
   }
@@ -40,5 +42,14 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  openNotifications(){
+    this.nav.setRoot(NotificationsPage);
+  }
+
+  exit(){
+    localStorage.removeItem('user');
+    this.nav.setRoot(LoginPage);
   }
 }

@@ -1,0 +1,30 @@
+<!--
+  Generated template for the LoginPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <form (ngSubmit)="doLogin()">
+    <ion-item style="padding-top: 40%;">
+      <ion-label color="primary" floating>Usuário</ion-label>
+      <ion-input [(ngModel)]="email" name="email" (ionChange)="checkForm()"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" floating>Senha</ion-label>
+      <ion-input type="password" [(ngModel)]="password" name="password" (ionChange)="checkForm()"></ion-input>
+    </ion-item>
+    <button [disabled]="haveErrors()" type="submit" ion-button block style="margin-top: 25px;">Entrar</button>
+    <div style="text-align: center;padding-top: 30px;">
+      <a (click)="openRegisterPage()" style="font-size: 16px;">Criar conta</a>
+    </div>
+  </form>
+</ion-content>

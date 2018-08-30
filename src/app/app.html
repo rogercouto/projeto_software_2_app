@@ -7,8 +7,19 @@
 
   <ion-content>
     <ion-list>
+      <ion-item color="light">
+        <ion-icon name="person"></ion-icon>&nbsp;Jhon Doe
+        <button menuClose ion-button round item-end icon-center (click)="openNotifications()">
+          <ion-icon name="notifications"></ion-icon>
+          <ion-badge item-end>5</ion-badge>
+        </button>
+      </ion-item>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
+          <ion-icon name="{{p.icon}}" item-start></ion-icon>{{p.title}}
+          <ion-badge *ngIf="p.notifications>0" item-end>{{p.notifications}}</ion-badge>
+      </button>
+      <button menuClose ion-item (click)="exit()">
+        <ion-icon name="exit" item-start></ion-icon>Sair
       </button>
     </ion-list>
   </ion-content>
