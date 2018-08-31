@@ -16,9 +16,14 @@ import { User, Token } from '../../model';
 @Injectable()
 export class UserServiceProvider {
 
-  public readonly TOKEN_URL = "http://127.0.0.1:8000/oauth/token";
+  public readonly SERVER_URL = "http://cidadeunida.pipelinelab.com.br";
+  //public readonly SERVER_URL = "http://127.0.0.1:8000";
+  public readonly CLIENT_SECRET = "vzcGTyWPN2csN7v0mHtqpgl8EK1O0tvH84B74D53";
+  //public readonly CLIENT_SECRET = "WnNKftBPr31tkqatS1dtIeNWG44AVMUbkLhZRr28";
 
-  public readonly USER_URL = "http://127.0.0.1:8000/api/user";
+  public readonly TOKEN_URL = this.SERVER_URL+"/oauth/token";
+
+  public readonly USER_URL = this.SERVER_URL+"/api/user";
 
   constructor(public http: Http) {
   }
@@ -33,7 +38,7 @@ export class UserServiceProvider {
     const data = {
       grant_type: "password",
       client_id: Number(1),
-      client_secret: "WnNKftBPr31tkqatS1dtIeNWG44AVMUbkLhZRr28",
+      client_secret: this.CLIENT_SECRET,
       username: email,
       password: password
     }
