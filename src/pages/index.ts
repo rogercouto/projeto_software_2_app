@@ -8,3 +8,4 @@ export * from './messages/messages';
 export * from './notifications/notifications';
 export * from './login/login';
 export * from './register/register';
+export * from './settings/settings';

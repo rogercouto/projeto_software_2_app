@@ -8,7 +8,10 @@
   <ion-content>
     <ion-list>
       <ion-item color="light">
-        <ion-icon name="person"></ion-icon>&nbsp;Jhon Doe
+        <ion-icon name="person"></ion-icon>&nbsp;{{user.name}}
+        <button menuClose ion-button item-end icon-center (click)="openSettings()" color="light">
+          <ion-icon name="settings"></ion-icon>
+        </button>
         <button menuClose ion-button round item-end icon-center (click)="openNotifications()">
           <ion-icon name="notifications"></ion-icon>
           <ion-badge item-end>5</ion-badge>

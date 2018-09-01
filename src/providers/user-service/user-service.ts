@@ -25,10 +25,18 @@ export class UserServiceProvider {
 
   public readonly USER_URL = this.SERVER_URL+"/api/user";
 
+  public readonly USERS_URL = this.SERVER_URL+"/api/users";
+
   constructor(public http: Http) {
   }
 
-  authenticate(email: string, password: string):Observable<Token>{
+  /**
+   * Try connect to API using email and password
+   * @param email api username
+   * @param password api password
+   * @returns JSON with token params
+   */
+  authenticate(email: string, password: string):Observable<any>{
     const headers = new Headers();
     headers.append('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
     headers.append('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -43,25 +51,44 @@ export class UserServiceProvider {
       password: password
     }
     return this.http.post(this.TOKEN_URL, JSON.stringify(data), {headers:headers})
-      .map(response => response.json() as Token) 
+      .map(response => response.json()) 
       .catch(error => Observable.throw(error));
   }
 
+  /**
+   * Return user from API
+   * @param token - user token stored in LocalStorage
+   */
   getUser(token : Token):Observable<User>{
     const headers = new Headers();
     headers.append('content-type','application/json');
     headers.append('Accept','application/json');
-    headers.append('Authorization',token.token_type+' '+token.access_token);
+    headers.append('Authorization',token.tokenType+' '+token.accessToken);
     return this.http.get(this.USER_URL, {headers:headers})
       .map(response => response.json())
       .catch(error => Observable.throw(error));
   }
 
+  /**
+   * Save user in localStorage
+   * @param user - User to save
+   */
   saveLocalUser(user : User){
     localStorage['user'] = JSON.stringify(user);
     localStorage['lastEmail'] = user.email;
   }
 
+  /**
+   * Save last email used
+   * @param email last email used
+   */
+  saveLastEmail(email : string){
+    localStorage['lastEmail'] = email;
+  }
+
+  /**
+   * Return logged user (with token)
+   */
   getLocalUser(){
     const data = localStorage['user'];
     if (data){
@@ -73,22 +100,73 @@ export class UserServiceProvider {
       user.password = localUser.password;
       const localToken = localUser.token;
       const token = new Token();
-      token.access_token = localToken.access_token;
-      token.expires_in = localToken.access_token;
-      token.refresh_token = localToken.refresh_token;
-      token.token_type = localToken.token_type;
+      token.accessToken = localToken.accessToken;
+      token.expiresIn = localToken.expiresIn;
+      token.refreshToken = localToken.refreshToken;
+      token.tokenType = localToken.tokenType;
       user.token = token;
       return user;
     }
     return null;
   }
 
+  /**
+   * Returns the last e-mail used and saved in localStorage
+   */
   getLastEmail(){
     const data = localStorage['lastEmail'];
     if (data){
       return localStorage['lastEmail'];
     }
     return "";
+  }
+
+  /**
+   * Register new user in api
+   * @param user - user to be registred
+   */
+  register(user : User, confirmPass : string):Observable<any>{
+    const headers = new Headers();
+    headers.append('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
+    headers.append('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    headers.append('Access-Control-Allow-Origin', '*');
+    headers.append('Access-Control-Allow-Credentials', 'true');
+    headers.append('content-type','application/json');
+    const data = {
+      name : user.name,
+      password : user.password,
+      password_confirmation : confirmPass,
+      email : user.email
+    }
+    return this.http.post(this.USERS_URL, JSON.stringify(data), {headers:headers})
+      .map(response => response.json()) 
+      .catch(error => Observable.throw(error));
+  }
+
+  /**
+   * Update current user
+   * @param user - user to be updated
+   * @param confirmPass - (optional) if user.password and confirmPass matches, changes the current password
+   */
+  update(user: User, confirmPass?: string):Observable<any>{
+    const headers = new Headers();
+    headers.append('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
+    headers.append('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    headers.append('Access-Control-Allow-Origin', '*');
+    headers.append('Access-Control-Allow-Credentials', 'true');
+    headers.append('content-type','application/json');
+    const data = (confirmPass == "") ? {
+      name : user.name,
+      email: user.email
+    }:{
+      name : user.name,
+      email: user.email,
+      password: user.password,
+      password_confirmation: confirmPass
+    }
+    return this.http.put(this.USERS_URL, JSON.stringify(data), {headers:headers})
+      .map(response => response.json()) 
+      .catch(error => Observable.throw(error));
   }
 
 }

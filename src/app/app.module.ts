@@ -6,7 +6,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { HomePage, ReportPage, ReportsPage, ReportFormPage, ReportDetailsPage,
-  MessageFormPage, MessagesPage, NotificationsPage, LoginPage, RegisterPage } from '../pages/';
+  MessageFormPage, MessagesPage, NotificationsPage, LoginPage, RegisterPage, SettingsPage } from '../pages/';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -24,7 +24,8 @@ import { UserServiceProvider } from '../providers';
     MessageFormPage,
     MessagesPage,
     NotificationsPage,
-    RegisterPage
+    RegisterPage,
+    SettingsPage
   ],
   imports: [
     BrowserModule,
@@ -44,7 +45,8 @@ import { UserServiceProvider } from '../providers';
     MessageFormPage,
     MessagesPage,
     NotificationsPage,
-    RegisterPage
+    RegisterPage,
+    SettingsPage
   ],
   providers: [
     StatusBar,

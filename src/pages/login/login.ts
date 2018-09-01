@@ -20,12 +20,17 @@ import { HomePage } from '../';
 })
 export class LoginPage {
 
-  private errors: boolean = false;
+  private readonly ERRORS = [
+    {code: 0, message: "Não foi possível conetar com o servidor!"},
+    {code: 400, message: "Usuário e(ou) senha não informado(s)!"},
+    {code: 401, message: "Usuário e(ou) senha incorreto(s)!"}
+  ];
+
+  private errors: boolean = true;
 
   private email : string;
   private password : string;
   private user : User;
-  private token: Token;
 
   constructor(
     public navCtrl: NavController,
@@ -49,9 +54,13 @@ export class LoginPage {
     lc.present();
     const authResponse = this.userService.authenticate(this.email, this.password);
     authResponse.subscribe(
-      token => {
-        this.token = token;
-        const userResponse = this.userService.getUser(this.token);
+      apiToken => {
+        const token = new Token();
+        token.tokenType = apiToken.token_type;
+        token.expiresIn = apiToken.expires_in;
+        token.accessToken = apiToken.access_token;
+        token.refreshToken = apiToken.refresh_token;
+        const userResponse = this.userService.getUser(token);
         userResponse.subscribe(
           apiUser => {
             this.user = new User();
@@ -68,27 +77,26 @@ export class LoginPage {
       },
       err => {
         lc.dismiss();
-        this.showAlert();
+        console.log(err.status);
+        this.showAlert(this.getMessage(err.status));
       }
     );
   }
 
-  verifyToken(user : User){
-    const userResponse = this.userService.getUser(this.token);
-    userResponse.subscribe(
-      apiUser => {
-        return true;
-      },
-      err =>{
-        return false;
+  getMessage(code : Number):string{
+    let message = "Erro desconhecido!";
+    this.ERRORS.forEach(function(error){
+      if (error.code == code){
+        message = error.message;
       }
-    );
+    });
+    return message;
   }
 
-  showAlert() {
+  showAlert(message : string) {
     let alert = this.alertCtrl.create({
       title: 'Atenção',
-      subTitle: 'Usuário ou senha(s) incorreto(s)',
+      subTitle: message,
       buttons: ['Ok']
     });
     alert.present();

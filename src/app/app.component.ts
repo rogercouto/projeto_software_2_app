@@ -4,7 +4,10 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage, LoginPage, ReportPage, ReportsPage,
-   MessagesPage, NotificationsPage } from '../pages';
+   MessagesPage, NotificationsPage, SettingsPage } from '../pages';
+
+import { UserServiceProvider } from '../providers';
+import { User } from '../model';
 
 @Component({
   templateUrl: 'app.html'
@@ -16,9 +19,11 @@ export class MyApp {
 
   pages: Array<{title: string, icon:string, component: any, notifications: number}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
-    this.initializeApp();
+  protected user : User;
 
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
+  private userService : UserServiceProvider) {
+    this.initializeApp();
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Início', icon: 'home', component: HomePage, notifications: 0 },
@@ -26,7 +31,7 @@ export class MyApp {
       { title: 'Relatos', icon: 'albums', component: ReportsPage, notifications: 2 },
       { title: 'Mensagens', icon: 'text', component: MessagesPage, notifications: 3 }
     ];
-
+    this.user = this.userService.getLocalUser();
   }
 
   initializeApp() {
@@ -42,6 +47,10 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  openSettings(){
+    this.nav.setRoot(SettingsPage);
   }
 
   openNotifications(){

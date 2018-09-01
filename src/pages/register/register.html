@@ -14,23 +14,23 @@
 
 
 <ion-content padding>
-    <form>
+    <form (ngSubmit)="doRegister()">
         <ion-item style="padding-top: 20%;">
           <ion-label color="primary" floating>Nome</ion-label>
-          <ion-input></ion-input>
+          <ion-input [(ngModel)]="user.name" name="name" (ionChange)="checkForm()"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label color="primary" floating>E-mail</ion-label>
-            <ion-input></ion-input>
+            <ion-input [(ngModel)]="user.email" name="email" (ionChange)="checkForm()"></ion-input>
           </ion-item>
         <ion-item>
           <ion-label color="primary" floating>Senha</ion-label>
-          <ion-input type="password"></ion-input>
+          <ion-input type="password" [(ngModel)]="user.password" name="password" (ionChange)="checkForm()"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label color="primary" floating>Confirmar senha</ion-label>
-            <ion-input type="password"></ion-input>
+            <ion-input type="password" [(ngModel)]="confirmPass" name="confirmPass" (ionChange)="checkForm()"></ion-input>
           </ion-item>
-        <button type="submit" ion-button block style="margin-top: 25px;">Confirmar</button>
+        <button [disabled]="errors" type="submit" ion-button block style="margin-top: 25px;">Confirmar</button>
       </form>
 </ion-content>
