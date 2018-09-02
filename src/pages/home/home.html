@@ -12,13 +12,11 @@
   <p>
     APP desenvolvido para desburocratizar o processo de relatar probleams nos municípios
   </p>
-  <p>Seu município:</p>
+  
   <ion-item>
-    <ion-icon name="pin"></ion-icon>
-    {{town()}}
+    <ion-label floating><ion-icon name="pin"></ion-icon>Seu município: </ion-label>
+    <ion-input [(ngModel)]="city" name="city" readonly="true"></ion-input>
   </ion-item>
-  <p *ngIf="!haveSupport()" style="color: white;background-color: red;padding: 10px;border-radius: 5px">
-      <ion-icon name="alert"></ion-icon> {{town()}} ainda não utiliza a plataforma
-  </p>
+  <br />
   <button *ngIf="haveSupport()" (click)="reportPage()" ion-button secondary block>Relatar problema</button>
 </ion-content>

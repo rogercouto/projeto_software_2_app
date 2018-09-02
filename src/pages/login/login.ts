@@ -39,11 +39,16 @@ export class LoginPage {
     private loadingCtrl : LoadingController,
     private alertCtrl: AlertController) 
   {
-    if (this.userService.getLocalUser() != null){
-      this.navCtrl.setRoot(HomePage);
+    const user = this.userService.getLocalUser();
+    if (user != null){
+      this.email = user.email;
+      this.password = user.password;
+      this.errors = false;
+      //this.navCtrl.setRoot(HomePage);
+    }else{
+      this.email = this.userService.getLastEmail();
+      this.password = "";
     }
-    this.email = this.userService.getLastEmail();
-    this.password = "";
   }
 
   ionViewDidLoad() {

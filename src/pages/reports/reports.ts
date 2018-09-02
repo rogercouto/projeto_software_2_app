@@ -16,7 +16,7 @@ import { ReportDetailsPage } from '../'
 })
 export class ReportsPage {
 
-  private sel: string = "mines";
+  protected sel: string = "mines";
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }

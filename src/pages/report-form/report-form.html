@@ -15,15 +15,16 @@
 
 <ion-content padding>
   <p>Descrição</p>
-  <ion-item>
-    <ion-label floating>Detalhes do problema</ion-label>
-    <ion-input type="text"></ion-input>
-  </ion-item>
-  <br/>
-  <ion-card>
+  <form (ngSubmit)="sendReport()">
+    <ion-item>
+      <ion-label floating>Detalhes do problema</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+    <br/>
+    <ion-card>
       <p *ngIf="photo()==null">Foto:</p>
       <div>
-          <img class="rep-photo" *ngIf="photo()!=null" src="{{photo()}}"/>
+        <img class="rep-photo" *ngIf="photo()!=null" src="{{photo()}}"/>
       </div>
       <ion-card-content>
         <div class="rep-camera">
@@ -31,5 +32,6 @@
         </div>
       </ion-card-content>
     </ion-card>
-  <button ion-button secondary block><ion-icon name="send">Enviar relato&nbsp;</ion-icon></button>
+    <button type="submit" ion-button secondary block><ion-icon name="send">Enviar relato&nbsp;</ion-icon></button>
+  </form>
 </ion-content>

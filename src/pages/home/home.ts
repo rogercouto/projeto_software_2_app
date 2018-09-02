@@ -3,28 +3,36 @@ import { NavController } from 'ionic-angular';
 
 import { ReportPage } from '../index';
 
+import { MyApp } from '../../app/app.component';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
 
-  private _town : string = "Santa Maria - RS";
+  protected city : string = "";
 
-  constructor(public navCtrl: NavController) {
+  constructor(
+    public navCtrl: NavController
+  ) {
+  }
 
+  ngOnInit(){
+    if (MyApp.location.city != null)
+      this.city = MyApp.location.city+" - "+MyApp.location.state;
+  }
+
+  ionViewDidLoad() {
   }
 
   reportPage(){
+    MyApp.getLocation(false);
     this.navCtrl.push(ReportPage);
-  }
-
-  town():string{
-    return this._town;
   }
 
   haveSupport():boolean{
     return true;
   }
-  
+
 }

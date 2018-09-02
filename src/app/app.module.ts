@@ -11,6 +11,8 @@ import { HomePage, ReportPage, ReportsPage, ReportFormPage, ReportDetailsPage,
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { UserServiceProvider } from '../providers';
+import { Geolocation } from '@ionic-native/geolocation';
+import { NativeGeocoder } from '@ionic-native/native-geocoder';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { UserServiceProvider } from '../providers';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    UserServiceProvider
+    UserServiceProvider,
+    Geolocation,
+    NativeGeocoder
   ]
 })
 export class AppModule {}

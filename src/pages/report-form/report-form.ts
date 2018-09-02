@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
+import { MyApp } from '../../app/app.component';
 
 /**
  * Generated class for the ReportFormPage page.
@@ -18,7 +19,9 @@ export class ReportFormPage {
   private _photo :string = "assets/imgs/image-regular.png";
   //private _photo :string = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController
+  ) {
   }
 
   ionViewDidLoad() {
@@ -27,6 +30,10 @@ export class ReportFormPage {
 
   photo():string{
     return this._photo;
+  }
+
+  sendReport(){
+    MyApp.presentAlert("Localização",JSON.stringify(MyApp.location));
   }
 
 }

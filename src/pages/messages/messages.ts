@@ -16,7 +16,7 @@ import { MessageFormPage } from '../';
 })
 export class MessagesPage {
  
-  private sel: string = "recieved";
+  protected sel: string = "recieved";
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
