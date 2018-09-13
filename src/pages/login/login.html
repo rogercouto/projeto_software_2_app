@@ -22,7 +22,7 @@
       <ion-label color="primary" floating>Senha</ion-label>
       <ion-input type="password" [(ngModel)]="password" name="password" (ionChange)="checkForm()"></ion-input>
     </ion-item>
-    <button [disabled]="haveErrors()" type="submit" ion-button block style="margin-top: 25px;">Entrar</button>
+    <button [disabled]="haveErrors()" type="submit" ion-button block round style="margin-top: 25px;">Entrar</button>
     <div style="text-align: center;padding-top: 30px;">
       <a (click)="openRegisterPage()" style="font-size: 16px;">Criar conta</a>
     </div>

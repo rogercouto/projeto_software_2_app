@@ -4,15 +4,16 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { Geolocation } from '@ionic-native/geolocation';
+import { NativeGeocoder } from '@ionic-native/native-geocoder';
+import { Camera } from '@ionic-native/camera';
+
 import { MyApp } from './app.component';
 import { HomePage, ReportPage, ReportsPage, ReportFormPage, ReportDetailsPage,
   MessageFormPage, MessagesPage, NotificationsPage, LoginPage, RegisterPage, SettingsPage } from '../pages/';
-
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { UserServiceProvider } from '../providers';
-import { Geolocation } from '@ionic-native/geolocation';
-import { NativeGeocoder } from '@ionic-native/native-geocoder';
+  import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider } from '../providers';
 
 @NgModule({
   declarations: [
@@ -55,8 +56,11 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UserServiceProvider,
+    LocationServiceProvider,
+    EntityServiceProvider,
     Geolocation,
-    NativeGeocoder
+    NativeGeocoder,
+    Camera
   ]
 })
 export class AppModule {}

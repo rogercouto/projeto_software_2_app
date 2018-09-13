@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+
 import { MyApp } from '../../app/app.component';
 
 /**
@@ -16,11 +18,12 @@ import { MyApp } from '../../app/app.component';
 })
 export class ReportFormPage {
 
-  private _photo :string = "assets/imgs/image-regular.png";
-  //private _photo :string = null;
+  //protected photo :string = "assets/imgs/image-regular.png";
+  protected photo :string = null;
 
   constructor(
     public navCtrl: NavController
+    ,private camera: Camera
   ) {
   }
 
@@ -28,12 +31,32 @@ export class ReportFormPage {
     console.log('ionViewDidLoad ReportFormPage');
   }
 
-  photo():string{
-    return this._photo;
-  }
-
   sendReport(){
     MyApp.presentAlert("Localização",JSON.stringify(MyApp.location));
+  }
+
+  takePhoto(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true
+    }
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      //let base64Image = 'data:image/jpeg;base64,' + imageData;
+      this.photo = imageData;
+    }, (err) => {
+      // Handle error
+    });
+    /*
+    */
+  }
+
+  openGallery(){
+    
   }
 
 }

@@ -12,4 +12,6 @@
 <h3>Rodando no dispositivo android:</h3>
 <hr/>
 <p>ionic cordova run android --device</p>
+<h3>Versão de testes:</h3>
+<hr>
 

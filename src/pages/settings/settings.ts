@@ -89,13 +89,15 @@ export class SettingsPage {
   }
 
   save(){
-    if (this.password != this.confirmPass){
+    if (this.togglePass && (this.password != this.confirmPass)){
       this.showAlert("Senha e confirmação devem ser iguais!")
       return;
     }
     const lc = this.loadingCtrl.create({content:'Aguarde...'});
     lc.present();
-    const registerResponse = this.userService.register(this.user, this.confirmPass);
+    this.user.name = this.name;
+    this.user.password = this.password;
+    const registerResponse = this.userService.update(this.user, this.confirmPass);
     registerResponse.subscribe(
       confirmation =>{
         const updatedUser = new User();
@@ -105,11 +107,12 @@ export class SettingsPage {
         updatedUser.token = this.user.token;
         this.userService.saveLocalUser(updatedUser);
         this.navCtrl.setRoot(HomePage);
+        lc.dismiss();
       },
       err =>{
         lc.dismiss();
         console.log(err);
-        this.showAlert("Sei lá cara");
+        this.showAlert(JSON.stringify(err));
       }
     );
   }

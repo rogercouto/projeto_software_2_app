@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { ReportDetailsPage } from '../'
+import { ReportDetailsPage, ReportPage } from '../'
+import { MyApp } from '../../app/app.component';
 /**
  * Generated class for the ReportsPage page.
  *
@@ -27,6 +28,14 @@ export class ReportsPage {
 
   openDetails(){
     this.navCtrl.push(ReportDetailsPage);
+  }
+
+  report(){
+    this.navCtrl.push(ReportPage);
+  }
+
+  canReport(){
+    return (MyApp.entity != null);
   }
 
 }

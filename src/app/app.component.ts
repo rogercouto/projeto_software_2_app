@@ -1,16 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, AlertController, LoadingController } from 'ionic-angular';
+import { Nav, Platform, AlertController, LoadingController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { Geolocation } from '@ionic-native/geolocation';
-import { NativeGeocoder, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
-
-import { HomePage, LoginPage, ReportPage, ReportsPage,
+import { HomePage, LoginPage, ReportsPage,
    MessagesPage, NotificationsPage, SettingsPage } from '../pages';
 
-import { UserServiceProvider } from '../providers';
-import { User, Location } from '../model';
+import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider } from '../providers';
+import { User, Location, Entity } from '../model';
 
 @Component({
   templateUrl: 'app.html'
@@ -18,68 +15,59 @@ import { User, Location } from '../model';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
+  public static readonly SERVER_URL = "http://cidadeunida.pipelinelab.com.br";
+  //public static readonly SERVER_URL = "http://127.0.0.1:8000";
+
   rootPage: any = LoginPage;
 
   pages: Array<{title: string, icon:string, component: any, notifications: number}>;
 
-  protected user : User;
-
-  public static location : Location = new Location();
+  //Atributos estáicos
+  public static user : User = null;
+  public static location : Location = null;
+  public static entity: Entity = null;
 
   private static alertController : AlertController;
-  private static geolocation : Geolocation;
-  private static nativeGeocoder : NativeGeocoder;
   public static loadingController : LoadingController;
+
+  protected userName : string = "";
 
   constructor(
     public platform: Platform, 
     public statusBar: StatusBar, 
     public splashScreen: SplashScreen,
+    private events : Events,
     private userService : UserServiceProvider,
+    private locationService : LocationServiceProvider,
+    private entityService : EntityServiceProvider,
     alertCtrl: AlertController,
-    geoloc: Geolocation,
-    natGeocoder: NativeGeocoder,
     loadingCtrl: LoadingController
   ) {
+    //this.locationService.publishLocation();
     MyApp.alertController = alertCtrl;
-    MyApp.geolocation = geoloc;
-    MyApp.nativeGeocoder = natGeocoder;
     MyApp.loadingController = loadingCtrl;
+    MyApp.user = this.userService.getLocalUser();
+    if (MyApp.user != null)
+      this.userName = MyApp.user.name;
+    this.events.subscribe("user:login", (user) => {
+      MyApp.user = user;
+      this.userName = user.name;
+      this.locationService.publishLocation();
+    });
+    this.events.subscribe('location:publish', (location) => {
+      MyApp.location = location;
+      this.entityService.publishEntity();
+    });
+    this.events.subscribe('entity:publish', (entity)=>{
+      MyApp.entity = entity;
+    });
     this.initializeApp();
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Início', icon: 'home', component: HomePage, notifications: 0 },
-      { title: 'Relatar problema', icon: 'send', component: ReportPage, notifications: 0 },
       { title: 'Relatos', icon: 'albums', component: ReportsPage, notifications: 2 },
       { title: 'Mensagens', icon: 'text', component: MessagesPage, notifications: 3 }
     ];
-    this.user = this.userService.getLocalUser();
-  }
-
-  public static async getLocation(showLoading: boolean = false){
-    const lc = this.loadingController.create({content: "Aguarde"});
-    if (showLoading)
-      lc.present();
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude)
-      .then((result: NativeGeocoderReverseResult[]) => {
-        this.location.city = result[0].locality;
-        this.location.state = result[0].administrativeArea;
-        this.location.street = result[0].thoroughfare,
-        this.location.number = result[0].subThoroughfare;
-        this.location.postalCode = result[0].postalCode;
-        if (showLoading)
-          lc.dismiss();
-      })
-      .catch((error: any) => console.log(error));
-    }).catch((error) => { 
-      if (showLoading)
-        lc.dismiss();
-    });
-  }
-
-  ngOnInit(){
-    MyApp.getLocation();
   }
 
   initializeApp() {
@@ -98,6 +86,7 @@ export class MyApp {
   }
 
   openSettings(){
+    //document.getElementById('ue').textContent = 'JS Wins!';
     this.nav.setRoot(SettingsPage);
   }
 
@@ -108,13 +97,6 @@ export class MyApp {
   exit(){
     localStorage.removeItem('user');
     this.nav.setRoot(LoginPage);
-  }
-
-  isUserLogged(){
-    if (this.user == null){
-      this.user = this.userService.getLocalUser();
-    }
-    return (this.user != null);
   }
 
   static presentAlert(title: string, message : string) {

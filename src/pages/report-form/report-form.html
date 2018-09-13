@@ -15,23 +15,22 @@
 
 <ion-content padding>
   <p>Descrição</p>
-  <form (ngSubmit)="sendReport()">
     <ion-item>
       <ion-label floating>Detalhes do problema</ion-label>
       <ion-input type="text"></ion-input>
     </ion-item>
     <br/>
     <ion-card>
-      <p *ngIf="photo()==null">Foto:</p>
+      <br/>
       <div>
-        <img class="rep-photo" *ngIf="photo()!=null" src="{{photo()}}"/>
+        <img class="rep-photo" *ngIf="photo!=null" src="{{photo}}"/>
       </div>
       <ion-card-content>
         <div class="rep-camera">
-          <button ion-button color="secondary" round ion-end><ion-icon name="camera"></ion-icon></button>
+          <button (click)="takePhoto()" ion-button color="secondary" round ion-end><ion-icon name="camera"></ion-icon></button>
+          <button (click)="openGallery()" ion-button color="secondary" round ion-end><ion-icon name="folder-open"></ion-icon></button>
         </div>
       </ion-card-content>
     </ion-card>
-    <button type="submit" ion-button secondary block><ion-icon name="send">Enviar relato&nbsp;</ion-icon></button>
-  </form>
+    <button (ngSubmit)="sendReport()" type="submit" ion-button secondary round block><ion-icon name="send">Enviar relato&nbsp;</ion-icon></button>
 </ion-content>

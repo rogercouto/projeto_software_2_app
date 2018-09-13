@@ -7,6 +7,7 @@ import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
 
 import { User, Token } from '../../model';
+import { MyApp } from '../../app/app.component';
 /*
   Generated class for the UserServiceProvider provider.
 
@@ -16,16 +17,15 @@ import { User, Token } from '../../model';
 @Injectable()
 export class UserServiceProvider {
 
-  public readonly SERVER_URL = "http://cidadeunida.pipelinelab.com.br";
-  //public readonly SERVER_URL = "http://127.0.0.1:8000";
+  
   public readonly CLIENT_SECRET = "vzcGTyWPN2csN7v0mHtqpgl8EK1O0tvH84B74D53";
   //public readonly CLIENT_SECRET = "WnNKftBPr31tkqatS1dtIeNWG44AVMUbkLhZRr28";
 
-  public readonly TOKEN_URL = this.SERVER_URL+"/oauth/token";
+  public readonly TOKEN_URL = MyApp.SERVER_URL+"/oauth/token";
 
-  public readonly USER_URL = this.SERVER_URL+"/api/user";
+  public readonly USER_URL = MyApp.SERVER_URL+"/api/user";
 
-  public readonly USERS_URL = this.SERVER_URL+"/api/users";
+  public readonly USERS_URL = MyApp.SERVER_URL+"/api/users";
 
   constructor(public http: Http) {
   }
@@ -38,11 +38,7 @@ export class UserServiceProvider {
    */
   authenticate(email: string, password: string):Observable<any>{
     const headers = new Headers();
-    headers.append('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
-    headers.append('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    headers.append('Access-Control-Allow-Origin', '*');
-    headers.append('Access-Control-Allow-Credentials', 'true');
-    headers.append('content-type','application/json');
+    headers.append('Content-Type','application/json');
     const data = {
       grant_type: "password",
       client_id: Number(1),
@@ -61,8 +57,7 @@ export class UserServiceProvider {
    */
   getUser(token : Token):Observable<User>{
     const headers = new Headers();
-    headers.append('content-type','application/json');
-    headers.append('Accept','application/json');
+    headers.append('Content-Type','application/json');
     headers.append('Authorization',token.tokenType+' '+token.accessToken);
     return this.http.get(this.USER_URL, {headers:headers})
       .map(response => response.json())
@@ -127,11 +122,7 @@ export class UserServiceProvider {
    */
   register(user : User, confirmPass : string):Observable<any>{
     const headers = new Headers();
-    headers.append('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
-    headers.append('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    headers.append('Access-Control-Allow-Origin', '*');
-    headers.append('Access-Control-Allow-Credentials', 'true');
-    headers.append('content-type','application/json');
+    headers.append('Content-Type','application/json');
     const data = {
       name : user.name,
       password : user.password,
@@ -150,17 +141,13 @@ export class UserServiceProvider {
    */
   update(user: User, confirmPass?: string):Observable<any>{
     const headers = new Headers();
-    headers.append('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
-    headers.append('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    headers.append('Access-Control-Allow-Origin', '*');
-    headers.append('Access-Control-Allow-Credentials', 'true');
-    headers.append('content-type','application/json');
+    headers.append('Content-Type','application/json');
+    headers.append('Accept','application/json');
+    headers.append('Authorization',user.token.tokenType+' '+user.token.accessToken);
     const data = (confirmPass == "") ? {
-      name : user.name,
-      email: user.email
+      name : user.name
     }:{
       name : user.name,
-      email: user.email,
       password: user.password,
       password_confirmation: confirmPass
     }

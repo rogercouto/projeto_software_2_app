@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { ReportPage } from '../index';
-
 import { MyApp } from '../../app/app.component';
 
 @Component({
@@ -11,28 +10,32 @@ import { MyApp } from '../../app/app.component';
 })
 export class HomePage {
 
-  protected city : string = "";
+  protected city : string = "(Aguardando localização do dispositivo...)";
 
   constructor(
     public navCtrl: NavController
   ) {
-  }
-
-  ngOnInit(){
-    if (MyApp.location.city != null)
+    if (MyApp.location != null)
       this.city = MyApp.location.city+" - "+MyApp.location.state;
+
+    if (MyApp.entity != null){
+      this.city = MyApp.entity.city.name+" - "+MyApp.entity.city.state.uf;
+    }
+  }
+  
+  ngOnInit(){    
   }
 
   ionViewDidLoad() {
+    //console.log(this.city);
   }
 
   reportPage(){
-    MyApp.getLocation(false);
     this.navCtrl.push(ReportPage);
   }
 
-  haveSupport():boolean{
-    return true;
+  canReport():boolean{
+    return (MyApp.entity != null);
   }
 
 }

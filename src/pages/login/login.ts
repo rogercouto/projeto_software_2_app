@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, Events } from 'ionic-angular';
 
 import { RegisterPage } from '../';
 import { UserServiceProvider } from '../../providers';
@@ -37,7 +37,8 @@ export class LoginPage {
     public navParams: NavParams,
     public userService : UserServiceProvider,
     private loadingCtrl : LoadingController,
-    private alertCtrl: AlertController) 
+    private alertCtrl: AlertController,
+    private events : Events) 
   {
     const user = this.userService.getLocalUser();
     if (user != null){
@@ -76,13 +77,13 @@ export class LoginPage {
             this.user.token = token;
             this.userService.saveLocalUser(this.user);
             lc.dismiss();
+            this.events.publish("user:login", this.user);
             this.navCtrl.setRoot(HomePage);
           }
         );
       },
       err => {
         lc.dismiss();
-        console.log(err.status);
         this.showAlert(this.getMessage(err.status));
       }
     );

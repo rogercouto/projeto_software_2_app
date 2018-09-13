@@ -53,6 +53,6 @@
         </ion-list>
       </div>
     <ion-fab right bottom>
-      <button ion-fab color="primary"><ion-icon name="send"></ion-icon></button>
+      <button [disabled]="!canReport()" ion-fab color="primary" (click)="report()"><ion-icon name="send"></ion-icon></button>
     </ion-fab>
 </ion-content>
