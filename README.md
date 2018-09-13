@@ -13,5 +13,6 @@
 <hr/>
 <p>ionic cordova run android --device</p>
 <h3>Versão de testes:</h3>
+<a href="platforms\android\build\outputs\apk\android-debug.apk">android-debug.apk</a>
 <hr>
 
