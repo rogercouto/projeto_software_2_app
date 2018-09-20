@@ -18,24 +18,10 @@
 <ion-content padding>
   <h3>Selecione a categoria:</h3>
   <ion-list>
-      <button ion-item (click)="selectCategory()">
-          <ion-icon name="bulb" item-start></ion-icon>
-        <h2>Iluminação</h2>
-        <p>Defeito com lâmpadas etc..</p>
-      </button>
-      <button ion-item>
-          <ion-icon name="medkit" item-start></ion-icon>
-        <h2>Saúde</h2>
-        <p>Focos de doenças etc...</p>
-      </button>
-      <button ion-item>
-        <ion-icon name="help" item-start></ion-icon>
-        ...
-      </button>
-      <button ion-item>
-        <ion-icon name="alert" item-start></ion-icon>
-        <h2>Outro</h2>
-        <p>Poblema não listado</p>
+      <button ion-item (click)="selectCategory(category)" *ngFor="let category of categories">
+          <ion-icon *ngIf="category.icon != null" name="{{category.icon}}" item-start></ion-icon>
+          <h2>{{category.name}}</h2>
+          <p *ngIf="category.description != null">{{category.description}}</p>
       </button>
     </ion-list>
 </ion-content>

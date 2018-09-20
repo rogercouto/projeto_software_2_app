@@ -6,8 +6,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage, LoginPage, ReportsPage,
    MessagesPage, NotificationsPage, SettingsPage } from '../pages';
 
-import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider } from '../providers';
-import { User, Location, Entity } from '../model';
+import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider, CategoryServiceProvider } from '../providers';
+import { User, Location, Entity, Category } from '../model';
 
 @Component({
   templateUrl: 'app.html'
@@ -26,6 +26,7 @@ export class MyApp {
   public static user : User = null;
   public static location : Location = null;
   public static entity: Entity = null;
+  public static categories: Array<Category> = new Array<Category>();
 
   private static alertController : AlertController;
   public static loadingController : LoadingController;
@@ -40,6 +41,7 @@ export class MyApp {
     private userService : UserServiceProvider,
     private locationService : LocationServiceProvider,
     private entityService : EntityServiceProvider,
+    private categoryService: CategoryServiceProvider,
     alertCtrl: AlertController,
     loadingCtrl: LoadingController
   ) {
@@ -61,6 +63,24 @@ export class MyApp {
     this.events.subscribe('entity:publish', (entity)=>{
       MyApp.entity = entity;
     });
+    const resp = this.categoryService.getAll();
+    resp.subscribe(
+      apiCategories =>{
+        for(let apiCategory of apiCategories){
+          if (apiCategory.status == 1){
+            const category = new Category();
+            category.id = apiCategory.id;
+            category.name = apiCategory.name;
+            category.description = apiCategory.description;
+            category.icon = apiCategory.icon;
+            MyApp.categories.push(category);
+          }
+        }
+      },
+      error=>{
+        console.log(error);
+      }
+    );
     this.initializeApp();
     // used for an example of ngFor and navigation
     this.pages = [

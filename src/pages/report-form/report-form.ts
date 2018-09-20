@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { MyApp } from '../../app/app.component';
+import { Category } from '../../model';
 
 /**
  * Generated class for the ReportFormPage page.
@@ -18,13 +19,18 @@ import { MyApp } from '../../app/app.component';
 })
 export class ReportFormPage {
 
+  protected category: Category = null;
+  protected address: string = "";
   //protected photo :string = "assets/imgs/image-regular.png";
   protected photo :string = null;
 
   constructor(
-    public navCtrl: NavController
-    ,private camera: Camera
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private camera: Camera
   ) {
+    this.category = this.navParams.get('selectedCategory');
+    this.address = MyApp.location.street+", "+MyApp.location.number;
   }
 
   ionViewDidLoad() {

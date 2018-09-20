@@ -4,3 +4,4 @@ export * from './location';
 export * from './entity';
 export * from './city';
 export * from './state';
+export * from './category';

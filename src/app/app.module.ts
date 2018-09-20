@@ -13,7 +13,8 @@ import { Camera } from '@ionic-native/camera';
 import { MyApp } from './app.component';
 import { HomePage, ReportPage, ReportsPage, ReportFormPage, ReportDetailsPage,
   MessageFormPage, MessagesPage, NotificationsPage, LoginPage, RegisterPage, SettingsPage } from '../pages/';
-  import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider } from '../providers';
+  import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider, CategoryServiceProvider } from '../providers';
+import { ReportServiceProvider } from '../providers/report-service/report-service';
 
 @NgModule({
   declarations: [
@@ -58,9 +59,11 @@ import { HomePage, ReportPage, ReportsPage, ReportFormPage, ReportDetailsPage,
     UserServiceProvider,
     LocationServiceProvider,
     EntityServiceProvider,
+    CategoryServiceProvider,
     Geolocation,
     NativeGeocoder,
-    Camera
+    Camera,
+    ReportServiceProvider
   ]
 })
 export class AppModule {}

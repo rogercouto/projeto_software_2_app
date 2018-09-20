@@ -16,8 +16,7 @@ export class HomePage {
     public navCtrl: NavController
   ) {
     if (MyApp.location != null)
-      this.city = MyApp.location.city+" - "+MyApp.location.state;
-
+      this.city = MyApp.location.city+" - "+MyApp.location.uf;
     if (MyApp.entity != null){
       this.city = MyApp.entity.city.name+" - "+MyApp.entity.city.state.uf;
     }

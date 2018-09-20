@@ -14,14 +14,24 @@
 
 
 <ion-content padding>
+  <ion-item>
+      <ion-icon *ngIf="category.icon != null" name="{{category.icon}}" item-start></ion-icon>
+      <h2>{{category.name}}</h2>
+      <p *ngIf="category.description != null">{{category.description}}</p>
+  </ion-item>
   <p>Descrição</p>
     <ion-item>
       <ion-label floating>Detalhes do problema</ion-label>
       <ion-input type="text"></ion-input>
     </ion-item>
+    <ion-item>
+        <ion-label floating>Endereço</ion-label>
+        <ion-input type="text" [(ngModel)]="address"></ion-input>
+    </ion-item>
     <br/>
     <ion-card>
       <br/>
+      <div class="rep-photo">Foto</div>
       <div>
         <img class="rep-photo" *ngIf="photo!=null" src="{{photo}}"/>
       </div>
@@ -32,5 +42,5 @@
         </div>
       </ion-card-content>
     </ion-card>
-    <button (ngSubmit)="sendReport()" type="submit" ion-button secondary round block><ion-icon name="send">Enviar relato&nbsp;</ion-icon></button>
+    <button (ngSubmit)="sendReport()" type="submit" ion-button secondary round block><ion-icon name="send">&nbsp;Enviar relato&nbsp;</ion-icon></button>
 </ion-content>
