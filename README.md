@@ -15,5 +15,5 @@
 <br/>
 <h3>APK do aplicativo:</h3>
 <hr/>
-<p><a href="https://github.com/rogercouto/projeto_software_2_app/apk/android-debug.apk">https://github.com/rogercouto/projeto_software_2_app/apk/android-debug.apk</a></p>
+<p><a href="https://github.com/rogercouto/projeto_software_2_app/tree/master/apk/android-debug.apk">https://github.com/rogercouto/projeto_software_2_app/tree/master/apk/android-debug.apk</a></p>
 
