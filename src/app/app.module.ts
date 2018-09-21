@@ -15,6 +15,7 @@ import { HomePage, ReportPage, ReportsPage, ReportFormPage, ReportDetailsPage,
   MessageFormPage, MessagesPage, NotificationsPage, LoginPage, RegisterPage, SettingsPage } from '../pages/';
   import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider, CategoryServiceProvider } from '../providers';
 import { ReportServiceProvider } from '../providers/report-service/report-service';
+import { File } from '@ionic-native/file';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { ReportServiceProvider } from '../providers/report-service/report-servic
     Geolocation,
     NativeGeocoder,
     Camera,
-    ReportServiceProvider
+    ReportServiceProvider,
+    File
   ]
 })
 export class AppModule {}

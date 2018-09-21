@@ -2,6 +2,8 @@ import { Http, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { MyApp } from '../../app/app.component';
+import { Category } from '../../model';
+import { Events } from 'ionic-angular';
 /*
   Generated class for the CategoryServiceProvider provider.
 
@@ -13,7 +15,7 @@ export class CategoryServiceProvider {
 
   public readonly CATEGORY_URL = MyApp.SERVER_URL+"/api/categories";
 
-  constructor(public http: Http) {
+  constructor(public http: Http, public events: Events) {
   }
 
   getAll():Observable<any>{
@@ -26,6 +28,29 @@ export class CategoryServiceProvider {
     return this.http.get(this.CATEGORY_URL, {headers:headers})
       .map(response => response.json()) 
       .catch(error => Observable.throw(error));
+  }
+
+  publishAll(){
+    const resp = this.getAll();
+    resp.subscribe(
+      apiCategories =>{
+        const categories = new Array<Category>();
+        for(let apiCategory of apiCategories){
+          if (apiCategory.status == 1){
+            const category = new Category();
+            category.id = apiCategory.id;
+            category.name = apiCategory.name;
+            category.description = apiCategory.description;
+            category.icon = apiCategory.icon;
+            categories.push(category);
+          }
+        }
+        this.events.publish("categories:get", categories);
+      },
+      error=>{
+        console.log(error);
+      }
+    );
   }
 
 }

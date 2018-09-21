@@ -5,3 +5,4 @@ export * from './entity';
 export * from './city';
 export * from './state';
 export * from './category';
+export * from './report';

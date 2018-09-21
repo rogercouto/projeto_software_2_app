@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Report } from '../../model';
 
 /**
  * Generated class for the ReportDetailsPage page.
@@ -15,11 +16,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ReportDetailsPage {
 
+  protected report : Report;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.report = navParams.get('report');
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ReportDetailsPage');
   }
 
 }

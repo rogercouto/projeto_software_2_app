@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
 import { ReportDetailsPage, ReportPage } from '../'
 import { MyApp } from '../../app/app.component';
+import { Report } from '../../model';
 /**
  * Generated class for the ReportsPage page.
  *
@@ -18,16 +19,25 @@ import { MyApp } from '../../app/app.component';
 export class ReportsPage {
 
   protected sel: string = "mines";
+  protected mineReports = new Array<Report>();
+  protected otherReports = new Array<Report>();
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    for (let report of MyApp.reports){
+      if (MyApp.user.id == report.userId){
+        this.mineReports.push(report);
+      }else{
+        this.otherReports.push(report);
+      }
+    }
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ReportsPage');
   }
 
-  openDetails(){
-    this.navCtrl.push(ReportDetailsPage);
+  openDetails(report: Report){
+    this.navCtrl.push(ReportDetailsPage, {report: report});
   }
 
   report(){

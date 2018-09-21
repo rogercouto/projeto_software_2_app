@@ -14,33 +14,37 @@
 
 
 <ion-content padding>
-  <ion-item>
+    <ion-item *ngIf="category != null">
       <ion-icon *ngIf="category.icon != null" name="{{category.icon}}" item-start></ion-icon>
       <h2>{{category.name}}</h2>
       <p *ngIf="category.description != null">{{category.description}}</p>
-  </ion-item>
+    </ion-item>
   <p>Descrição</p>
     <ion-item>
       <ion-label floating>Detalhes do problema</ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-input type="text" [(ngModel)]="report.description" name="description" 
+        (ionChange)="changeDescr()" (ionBlur)="checkDescr()"></ion-input>
     </ion-item>
+    <span *ngIf="errorDescr" style="color: red;margin-left: 15px;">Descrição não pode ficar em branco</span>
     <ion-item>
         <ion-label floating>Endereço</ion-label>
-        <ion-input type="text" [(ngModel)]="address"></ion-input>
+        <ion-input type="text" [(ngModel)]="report.address" name="address" 
+          (ionChange)="changeAddress()" (ionBlur)="checkAddress()"></ion-input>
     </ion-item>
+    <span *ngIf="errorAddress" style="color: red;margin-left: 15px;">Endereço não pode ficar em branco</span>
     <br/>
     <ion-card>
       <br/>
       <div class="rep-photo">Foto</div>
       <div>
-        <img class="rep-photo" *ngIf="photo!=null" src="{{photo}}"/>
+        <img class="rep-photo" *ngIf="report.photo!=null" src="{{report.photo}}"/>
       </div>
       <ion-card-content>
         <div class="rep-camera">
           <button (click)="takePhoto()" ion-button color="secondary" round ion-end><ion-icon name="camera"></ion-icon></button>
-          <button (click)="openGallery()" ion-button color="secondary" round ion-end><ion-icon name="folder-open"></ion-icon></button>
+          <button (click)="selectPhoto()" ion-button color="secondary" round ion-end><ion-icon name="folder-open"></ion-icon></button>
         </div>
       </ion-card-content>
     </ion-card>
-    <button (ngSubmit)="sendReport()" type="submit" ion-button secondary round block><ion-icon name="send">&nbsp;Enviar relato&nbsp;</ion-icon></button>
+    <button [disabled]="!checkForm()" (click)="sendReport()" type="submit" ion-button secondary round block><ion-icon name="send">&nbsp;Enviar relato&nbsp;</ion-icon></button>
 </ion-content>

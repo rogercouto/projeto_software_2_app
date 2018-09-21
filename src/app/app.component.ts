@@ -6,8 +6,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage, LoginPage, ReportsPage,
    MessagesPage, NotificationsPage, SettingsPage } from '../pages';
 
-import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider, CategoryServiceProvider } from '../providers';
-import { User, Location, Entity, Category } from '../model';
+import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider, CategoryServiceProvider, ReportServiceProvider } from '../providers';
+import { User, Location, Entity, Category, Report } from '../model';
 
 @Component({
   templateUrl: 'app.html'
@@ -26,7 +26,8 @@ export class MyApp {
   public static user : User = null;
   public static location : Location = null;
   public static entity: Entity = null;
-  public static categories: Array<Category> = new Array<Category>();
+  public static categories: Array<Category> = null;
+  public static reports: Array<Report> = null;
 
   private static alertController : AlertController;
   public static loadingController : LoadingController;
@@ -42,6 +43,7 @@ export class MyApp {
     private locationService : LocationServiceProvider,
     private entityService : EntityServiceProvider,
     private categoryService: CategoryServiceProvider,
+    private reportService: ReportServiceProvider,
     alertCtrl: AlertController,
     loadingCtrl: LoadingController
   ) {
@@ -56,31 +58,21 @@ export class MyApp {
       this.userName = user.name;
       this.locationService.publishLocation();
     });
+    this.categoryService.publishAll(); 
     this.events.subscribe('location:publish', (location) => {
       MyApp.location = location;
       this.entityService.publishEntity();
     });
     this.events.subscribe('entity:publish', (entity)=>{
       MyApp.entity = entity;
+      this.reportService.publishAll();
     });
-    const resp = this.categoryService.getAll();
-    resp.subscribe(
-      apiCategories =>{
-        for(let apiCategory of apiCategories){
-          if (apiCategory.status == 1){
-            const category = new Category();
-            category.id = apiCategory.id;
-            category.name = apiCategory.name;
-            category.description = apiCategory.description;
-            category.icon = apiCategory.icon;
-            MyApp.categories.push(category);
-          }
-        }
-      },
-      error=>{
-        console.log(error);
-      }
-    );
+    this.events.subscribe("categories:get",(categories)=>{
+      MyApp.categories=categories;
+    });
+    this.events.subscribe("reports:get", (reports)=>{
+      MyApp.reports = this.sortReports(reports);
+    });
     this.initializeApp();
     // used for an example of ngFor and navigation
     this.pages = [
@@ -126,6 +118,35 @@ export class MyApp {
       buttons: ['Ok']
     });
     alert.present();
+  }
+
+  static getCategory(categoryId : number){
+    for(let category of this.categories){
+      if (category.id == categoryId)
+        return category;
+    }
+    return null;
+  }
+
+  sortReports(reports : Array<Report>){
+    return reports.sort((report1, report2) => {
+      if (report1.id < report2.id) {
+          return 1;
+      }
+      if (report1.id > report2.id) {
+          return -1;
+      }
+      return 0;
+    });
+  }
+
+  static addReport(report: Report){
+    const reports = new Array<Report>();
+    reports.push(report);
+    for(let r of this.reports){
+      reports.push(r);
+    }
+    this.reports = reports;
   }
 
 }

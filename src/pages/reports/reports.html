@@ -27,29 +27,20 @@
       
       <div [ngSwitch]="sel">
         <ion-list *ngSwitchCase="'mines'">
-            <button ion-item (click)="openDetails()">
-                <ion-icon name="bulb" item-start></ion-icon>
-              <h2>Lampada quebrada</h2>
-              <p>Rua Francisco Giuliani, 121</p>
-              <p>Situação: Em andamento</p>
-            </button>
-            <button ion-item>
-                <ion-icon name="medkit" item-start></ion-icon>
-              <h2>Foco de dengue</h2>
-              <p>Rua João Otto Friedrich</p>
-              <p>Situação: Fechada em 01/08/2018</p>
-            </button>
+            <button *ngFor="let report of mineReports" ion-item (click)="openDetails(report)">
+                <ion-icon name="{{report.icon}}" item-start></ion-icon>
+                <h2>{{report.description}}</h2>
+                <p>{{report.address}}</p>
+                <p>Situação: ???</p>
+            </button>  
         </ion-list>
         <ion-list *ngSwitchCase="'all'">
-            <button ion-item>
-                <ion-icon name="help" item-start></ion-icon>
-                ...
-              </button>
-              <button ion-item>
-                <ion-icon name="alert" item-start></ion-icon>
-                <h2>Outro</h2>
-                <p>Poblema não listado</p>
-              </button>
+            <button *ngFor="let report of otherReports" ion-item (click)="openDetails(report)">
+                <ion-icon name="{{report.icon}}" item-start></ion-icon>
+                <h2>{{report.description}}</h2>
+                <p>{{report.address}}</p>
+                <p>Situação: ???</p>
+            </button>
         </ion-list>
       </div>
     <ion-fab right bottom>

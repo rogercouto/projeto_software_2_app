@@ -16,14 +16,17 @@
 <ion-content padding>
 
   <ion-item>
-    <ion-icon name="bulb" item-start></ion-icon>
-    <h2>Lampada quebrada</h2>
-    <p>Rua Francisco Giuliani, 121</p>
-    <p>Situação: Em andamento</p>
+    <ion-icon name="{{report.icon}}" item-start></ion-icon>
+    <h2>{{report.description}}</h2>
+    <p>{{report.address}}</p>
+    <p>Situação: ???</p>
   </ion-item>
-
+  <div>
+    <img class="rep-photo" *ngIf="report.photo!=null" 
+    src="http://cidadeunida.pipelinelab.com.br/storage/reports/{{report.photo}}"/>
+  </div>
   <ion-item>
-    <p><b>Aberta em:</b> 01/08/2018</p>
+    <p><b>Aberta em:</b> {{report.createdAt |  date:'dd/MM/yyyy'}}</p>
     <div style="float: right;">
         <ion-icon name="thumbs-up"></ion-icon> 5
         &nbsp;

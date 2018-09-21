@@ -37,6 +37,8 @@ export class LocationServiceProvider {
         .then((result: NativeGeocoderReverseResult[]) => {
           //MyApp.presentAlert("Localização: ", JSON.stringify(result[0]));
           const location = new Location();
+          location.lat = resp.coords.latitude;
+          location.lng = resp.coords.longitude;
           if (result[0].locality != undefined)
             location.city = result[0].locality;
           else  
@@ -73,19 +75,22 @@ export class LocationServiceProvider {
       });
     }else{
       const location = new Location();
-      /*
-      location.city = "Restinga Sêca";
+      location.lat = 0;
+      location.lng = 0;
+      location.city = "Restinga Seca";
       location.state = "Rio Grande do Sul";
+      location.uf = "RS";
       location.street = "Rua José Celestino Alves",
       location.number = "134";
       location.postalCode = "97200-000";
-      */
+      /*
       location.city = "Santa Maria";
       location.state = "Rio Grande do Sul";
       location.uf = "RS";
       location.street = "Av. Roraima",
       location.number = "1000";
       location.postalCode = "97105-900";
+      */
       //console.log(location);
       this.events.publish('location:publish', location);
       lc.dismiss();
