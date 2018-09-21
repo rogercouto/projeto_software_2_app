@@ -12,5 +12,8 @@
 <h3>Rodando no dispositivo android:</h3>
 <hr/>
 <p>ionic cordova run android --device</p>
-<hr>
+<br/>
+<h3>APK do aplicativo:</h3>
+<hr/>
+<p><a href="https://github.com/rogercouto/projeto_software_2_app/apk/android-debug.apk">https://github.com/rogercouto/projeto_software_2_app/apk/android-debug.apk</a></p>
 
