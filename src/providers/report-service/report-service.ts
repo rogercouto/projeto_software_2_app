@@ -18,6 +18,8 @@ export class ReportServiceProvider {
 
   public readonly REPORT_URL = MyApp.SERVER_URL+"/api/reports";
 
+  public readonly REPORTS_URL = MyApp.SERVER_URL+"/api/reports/entity";
+
   private loader = null;
 
   constructor(public http: Http, public file: File, public events : Events) {
@@ -81,11 +83,13 @@ export class ReportServiceProvider {
   };
   
   getAll():Observable<any>{
+    if (MyApp.entity == null)
+      return new Observable<any>();
     const headers = new Headers();
     headers.append('Content-Type','application/json');
     headers.append('Accept','application/json');
     headers.append('Authorization',MyApp.user.token.tokenType+' '+MyApp.user.token.accessToken);
-    return this.http.get(this.REPORT_URL, {headers:headers})
+    return this.http.get(this.REPORTS_URL+"/"+MyApp.entity.id, {headers:headers})
       .map(response => response.json()) 
       .catch(error => Observable.throw(error));
   }
@@ -96,8 +100,7 @@ export class ReportServiceProvider {
       apiReports => {
         const reports = new Array<Report>();
         for (let apiReport of apiReports){
-          //tirar verificação de entidade posteriormente, quando estiver na API
-          if (apiReport.closing_date == null && apiReport.entity_id == MyApp.entity.id){
+          if (apiReport.closing_date == null){
             const report = new Report();
             report.id = apiReport.id;
             report.description = apiReport.description;

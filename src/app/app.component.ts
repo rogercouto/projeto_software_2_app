@@ -65,7 +65,8 @@ export class MyApp {
     });
     this.events.subscribe('entity:publish', (entity)=>{
       MyApp.entity = entity;
-      this.reportService.publishAll();
+      if (entity != null)
+        this.reportService.publishAll();
     });
     this.events.subscribe("categories:get",(categories)=>{
       MyApp.categories=categories;
@@ -129,6 +130,8 @@ export class MyApp {
   }
 
   sortReports(reports : Array<Report>){
+    if (reports == null)
+      return;
     return reports.sort((report1, report2) => {
       if (report1.id < report2.id) {
           return 1;
@@ -147,6 +150,10 @@ export class MyApp {
       reports.push(r);
     }
     this.reports = reports;
+  }
+
+  haveEntity():boolean{
+    return MyApp.entity != null;
   }
 
 }

@@ -21,22 +21,24 @@
     <p>{{report.address}}</p>
     <p>Situação: ???</p>
   </ion-item>
-  <div>
+  <div *ngIf='report.photo != ""'>
     <img class="rep-photo" *ngIf="report.photo!=null" 
     src="http://cidadeunida.pipelinelab.com.br/storage/reports/{{report.photo}}"/>
   </div>
   <ion-item>
     <p><b>Aberta em:</b> {{report.createdAt |  date:'dd/MM/yyyy'}}</p>
-    <div style="float: right;">
+    <!--
+      <div style="float: right;">
         <ion-icon name="thumbs-up"></ion-icon> 5
         &nbsp;
         <ion-icon name="thumbs-down"></ion-icon> 1
-    </div>
+      </div>
+    -->
   </ion-item>
-
-  <ion-item>
-    <p><b>Atualização:</b> 02/08/2018</p>
-    <p style="white-space: pre-line;">Equipe de manutenção enviada para avaliar o problema</p>
-  </ion-item>
-
+  <!--
+    <ion-item>
+      <p><b>Atualização:</b> 02/08/2018</p>
+      <p style="white-space: pre-line;">Equipe de manutenção enviada para avaliar o problema</p>
+    </ion-item>
+  -->
 </ion-content>
