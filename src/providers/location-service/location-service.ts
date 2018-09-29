@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { NativeGeocoder, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
 import { Location } from '../../model';
 import { MyApp } from '../../app/app.component';
+import 'rxjs/add/operator/timeout';
 
 /*
   Generated class for the LocationServiceProvider provider.
@@ -31,7 +32,7 @@ export class LocationServiceProvider {
     const lc = MyApp.loadingController.create({content:"Verificando localização..."});
     lc.present();
     if (this.platform.is("cordova")){
-      this.geolocation.getCurrentPosition().then((resp) => {
+      this.geolocation.getCurrentPosition({timeout:15000}).then((resp) => {
         //MyApp.presentAlert("Cordenadas: ", "lat: "+resp.coords.latitude+", lng: "+resp.coords.longitude);
         this.nativeGeocoder.reverseGeocode(resp.coords.latitude, resp.coords.longitude)
         .then((result: NativeGeocoderReverseResult[]) => {
@@ -69,31 +70,37 @@ export class LocationServiceProvider {
         })
         .catch((error: any) => console.log(error));
       }).catch((error) => { 
-        console.log(error);
-        MyApp.presentAlert("Erro", JSON.stringify(error));
+        //MyApp.presentAlert("Erro", JSON.stringify(error));
         lc.dismiss();
+        MyApp.presentAlert("Aviso", "Não foi possível recuperar a localização atual!");
+        this.events.publish('location:publish', null);
       });
     }else{
       const location = new Location();
       location.lat = 0;
       location.lng = 0;
+      /*
       location.city = "Restinga Seca";
       location.state = "Rio Grande do Sul";
       location.uf = "RS";
       location.street = "Rua José Celestino Alves",
       location.number = "134";
       location.postalCode = "97200-000";
-      /*
-      location.city = "Santa Maria";
+      */
+      location.city = "Santa Maria X";
       location.state = "Rio Grande do Sul";
       location.uf = "RS";
       location.street = "Av. Roraima",
       location.number = "1000";
       location.postalCode = "97105-900";
-      */
-      //console.log(location);
-      this.events.publish('location:publish', location);
       lc.dismiss();
+      this.events.publish('location:publish', location);
+      /*
+      //console.log(location);
+      MyApp.presentAlert("Aviso", "Não foi possível recuperar a localização atual!");
+      lc.dismiss();
+      this.events.publish('location:publish', null); 
+     */
     }
   }
 

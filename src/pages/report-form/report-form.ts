@@ -35,7 +35,9 @@ export class ReportFormPage {
     private camera: Camera
   ) {
     this.category = this.navParams.get('selectedCategory');
-    this.report.address = MyApp.location.street+", "+MyApp.location.number;
+    this.report.address = MyApp.location.street;
+    if (MyApp.location.number != null && MyApp.location.number != undefined)
+      this.report.address += ", "+MyApp.location.number;
   }
 
   ionViewDidLoad() {

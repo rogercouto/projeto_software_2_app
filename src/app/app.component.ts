@@ -20,14 +20,16 @@ export class MyApp {
 
   rootPage: any = LoginPage;
 
-  pages: Array<{title: string, icon:string, component: any, notifications: number}>;
+  pages: Array<{index: number, title: string, icon:string, component: any, notificationId: string, notifications: number}>;
 
-  //Atributos estáicos
+  //Atributos estáticos
   public static user : User = null;
   public static location : Location = null;
+  public static entities : Array<Entity> = new Array<Entity>();
   public static entity: Entity = null;
   public static categories: Array<Category> = null;
   public static reports: Array<Report> = null;
+  public static autoLocation : boolean = false;
 
   private static alertController : AlertController;
   public static loadingController : LoadingController;
@@ -58,15 +60,26 @@ export class MyApp {
       this.userName = user.name;
       this.locationService.publishLocation();
     });
+    this.entityService.publishAll();
+    this.events.subscribe("entities:publish", (entities)=>{
+      MyApp.entities = entities;
+    });
     this.categoryService.publishAll(); 
     this.events.subscribe('location:publish', (location) => {
-      MyApp.location = location;
-      this.entityService.publishEntity();
+      //console.log(location);
+      if (location != null){
+        MyApp.location = location;
+        MyApp.autoLocation = true;
+        this.entityService.publishEntity();
+      }
     });
     this.events.subscribe('entity:publish', (entity)=>{
-      MyApp.entity = entity;
-      if (entity != null)
+      if (entity != null){
+        MyApp.entity = entity;
         this.reportService.publishAll();
+      }else{
+        MyApp.autoLocation = false;
+      }
     });
     this.events.subscribe("categories:get",(categories)=>{
       MyApp.categories=categories;
@@ -77,9 +90,9 @@ export class MyApp {
     this.initializeApp();
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Início', icon: 'home', component: HomePage, notifications: 0 },
-      { title: 'Relatos', icon: 'albums', component: ReportsPage, notifications: 2 },
-      { title: 'Mensagens', icon: 'text', component: MessagesPage, notifications: 3 }
+      { index: 0, title: 'Início', icon: 'home', component: HomePage, notificationId: '', notifications: 0 },
+      { index: 1, title: 'Relatos', icon: 'albums', component: ReportsPage, notificationId: 'not-rel', notifications: 0 },
+      { index: 2, title: 'Mensagens', icon: 'text', component: MessagesPage, notificationId: 'not-msg', notifications: 0 }
     ];
   }
 
@@ -97,6 +110,13 @@ export class MyApp {
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
   }
+  
+  /*
+  openPage(pageIndex : number){
+    this.nav.setRoot(this.pages[pageIndex].component);
+  }
+  */
+
 
   openSettings(){
     //document.getElementById('ue').textContent = 'JS Wins!';

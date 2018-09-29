@@ -12,10 +12,16 @@
   <p>
     APP desenvolvido para desburocratizar o processo de relatar probleams nos municípios
   </p>
-  <ion-item class="nli">
+  <ion-item class="nli" *ngIf="isAutoLocation()">
     <ion-label floating><ion-icon name="pin"></ion-icon>Sua localidade: </ion-label>
     <ion-input id="inputcity" [(ngModel)]="city" name="city" readonly="true"></ion-input>
   </ion-item>
+  <ion-item class="nli" *ngIf="!isAutoLocation()">
+      <ion-label floating><ion-icon name="pin"></ion-icon>Sua localidade: </ion-label>
+      <ion-select [(ngModel)]="entityId" (ionChange)="selectEntity()">
+        <ion-option *ngFor="let e of entities" value="{{e.id}}">{{e.name}}</ion-option>
+      </ion-select>
+    </ion-item>
   <!--
     <ion-icon name="pin"></ion-icon>Seu município:<span id="spancity">{{city}}</span>
 

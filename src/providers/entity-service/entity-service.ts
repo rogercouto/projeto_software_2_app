@@ -21,6 +21,42 @@ export class EntityServiceProvider {
   constructor(public http: Http, private events : Events) {
   }
 
+  gerAll():Observable<any>{
+    const headers = new Headers();
+    headers.append('Content-Type','application/json');
+    headers.append('Accept','application/json');
+    headers.append('Authorization',MyApp.user.token.tokenType+' '+MyApp.user.token.accessToken);
+    return this.http.get(this.ENTITY_URL, {headers:headers})
+      .map(response => response.json()) 
+      .catch(error => Observable.throw(error));
+  }
+
+  publishAll(){
+    const obs = this.gerAll();
+        obs.subscribe(apiEntities =>{
+          const entities = new Array<Entity>();
+          for (let apiEntity of apiEntities){
+              const entity = new Entity();
+              entity.id = apiEntity.id;
+              entity.name = apiEntity.name;
+              entity.phone = apiEntity.phone;
+              entity.email = apiEntity.email;
+              entity.street = apiEntity.street;
+              entity.number = apiEntity.number;
+              entity.complement = apiEntity.complement;
+              entity.city = new City();
+              entity.city.id = apiEntity.city.id;
+              entity.city.name = apiEntity.city.name;
+              entity.city.state = new State();
+              entity.city.state.id = apiEntity.city.state.id;
+              entity.city.state.uf = apiEntity.city.state.uf;
+              entity.city.state.name = apiEntity.city.state.name;
+              entities.push(entity);
+          }
+          this.events.publish('entities:publish', entities);
+        });
+  }
+
   getEntity(token: Token, cityName : string):Observable<any>{
     const headers = new Headers();
     headers.append('Content-Type','application/json');
