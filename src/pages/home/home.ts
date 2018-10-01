@@ -70,9 +70,6 @@ export class HomePage {
     location.uf = MyApp.entity.city.state.uf;
     location.street = "";
     MyApp.location = location;
-    this.reportService.publishAll();
-    /*
-    */
   }
 
 }

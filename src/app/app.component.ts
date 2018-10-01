@@ -7,7 +7,7 @@ import { HomePage, LoginPage, ReportsPage,
    MessagesPage, NotificationsPage, SettingsPage } from '../pages';
 
 import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider, CategoryServiceProvider, ReportServiceProvider } from '../providers';
-import { User, Location, Entity, Category, Report } from '../model';
+import { User, Location, Entity, Category } from '../model';
 
 @Component({
   templateUrl: 'app.html'
@@ -28,7 +28,7 @@ export class MyApp {
   public static entities : Array<Entity> = new Array<Entity>();
   public static entity: Entity = null;
   public static categories: Array<Category> = null;
-  public static reports: Array<Report> = null;
+  
   public static autoLocation : boolean = false;
 
   private static alertController : AlertController;
@@ -84,9 +84,7 @@ export class MyApp {
     this.events.subscribe("categories:get",(categories)=>{
       MyApp.categories=categories;
     });
-    this.events.subscribe("reports:get", (reports)=>{
-      MyApp.reports = this.sortReports(reports);
-    });
+    
     this.initializeApp();
     // used for an example of ngFor and navigation
     this.pages = [
@@ -147,29 +145,6 @@ export class MyApp {
         return category;
     }
     return null;
-  }
-
-  sortReports(reports : Array<Report>){
-    if (reports == null)
-      return;
-    return reports.sort((report1, report2) => {
-      if (report1.id < report2.id) {
-          return 1;
-      }
-      if (report1.id > report2.id) {
-          return -1;
-      }
-      return 0;
-    });
-  }
-
-  static addReport(report: Report){
-    const reports = new Array<Report>();
-    reports.push(report);
-    for(let r of this.reports){
-      reports.push(r);
-    }
-    this.reports = reports;
   }
 
   haveEntity():boolean{

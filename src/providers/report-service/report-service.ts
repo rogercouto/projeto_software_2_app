@@ -2,7 +2,7 @@ import { Http, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { File, FileEntry } from '@ionic-native/file';
-import { Report } from '../../model';
+import { Report, Reaction } from '../../model';
 import { MyApp } from '../../app/app.component';
 import { Events } from 'ionic-angular';
 import { ReportsPage } from '../../pages';
@@ -19,6 +19,8 @@ export class ReportServiceProvider {
   public readonly REPORT_URL = MyApp.SERVER_URL+"/api/reports";
 
   public readonly REPORTS_URL = MyApp.SERVER_URL+"/api/reports/entity";
+
+  public readonly REACTION_URL = MyApp.SERVER_URL+"/api/reports/react";
 
   private loader = null;
 
@@ -70,17 +72,18 @@ export class ReportServiceProvider {
         this.loader.dismiss();
         //MyApp.presentAlert("Sucesso", "Relato enviado!");
         MyApp.presentAlert("Sucesso", JSON.stringify(data));
+        report.positiveReactions = 0;
+        report.negativeReactions = 0;
         report.photo = data.photo;
         report.createdAt = new Date(data.created_at);
-        MyApp.addReport(report);
         this.events.publish("page:set",ReportsPage);
       },
       error => {
         this.loader.dismiss();
         MyApp.presentAlert("Erro", JSON.stringify(error));
       }
-    )
-  };
+    );
+  }
   
   getAll():Observable<any>{
     if (MyApp.entity == null)
@@ -112,6 +115,32 @@ export class ReportServiceProvider {
             report.lat = apiReport.lat;
             report.lng = apiReport.lng;
             report.createdAt = new Date(apiReport.created_at);
+            report.status = apiReport.status;
+            report.positiveReactions = 0;
+            report.negativeReactions = 0;
+            for(let apiReaction of apiReport.positives){
+              const reaction = new Reaction();
+              reaction.id = apiReaction.id;
+              reaction.reaction = true;
+              reaction.comment = apiReaction.comment;
+              reaction.reportId = apiReaction.report_id;
+              reaction.userId = apiReaction.user_id;
+              report.reactions.push(reaction);
+              report.positiveReactions++;
+            }
+            for(let apiReaction of apiReport.negatives){
+              const reaction = new Reaction();
+              reaction.id = apiReaction.id;
+              reaction.reaction = false;
+              reaction.comment = apiReaction.comment;
+              reaction.reportId = apiReaction.report_id;
+              reaction.userId = apiReaction.user_id;
+              report.reactions.push(reaction);
+              report.negativeReactions++;
+            }
+            /*
+            console.log(apiReport.positives);
+            */
             reports.push(report);
           }
         }
@@ -122,6 +151,85 @@ export class ReportServiceProvider {
         this.events.publish("reports:get",null);
       }
     );
+  }
+
+  postReaction(reaction : Reaction){
+    const headers = new Headers();
+    headers.append('Content-Type','application/json');
+    headers.append('Accept','application/json');
+    headers.append('Authorization',MyApp.user.token.tokenType+' '+MyApp.user.token.accessToken);
+    const data = {
+      reaction : (reaction.reaction)?1:0,
+      comment : reaction.comment,
+      user_id : MyApp.user.id,
+      report_id : reaction.reportId
+    }
+    this.loader = MyApp.loadingController.create({content:"Aguarde..."})
+    this.http.post(this.REACTION_URL, data, {headers:headers})
+    .map(res => res.json())
+    .catch(error => Observable.throw(error))
+    .subscribe(
+      data => {
+        this.loader.dismiss();
+        this.events.publish('react:post', data);
+      },
+      error => {
+        this.loader.dismiss();
+        MyApp.presentAlert("Erro", JSON.stringify(error));
+      }
+    );
+  }
+
+  getReactions(reportId : number):Observable<any>{
+    const headers = new Headers();
+    headers.append('Content-Type','application/json');
+    headers.append('Accept','application/json');
+    headers.append('Authorization',MyApp.user.token.tokenType+' '+MyApp.user.token.accessToken);
+    return this.http.get(this.REACTION_URL+"/"+reportId, {headers:headers})
+      .map(response => response.json()) 
+      .catch(error => Observable.throw(error));
+  }
+
+  deleteReaction(reaction : Reaction){
+    const headers = new Headers();
+    headers.append('Content-Type','application/json');
+    headers.append('Accept','application/json');
+    headers.append('Authorization',MyApp.user.token.tokenType+' '+MyApp.user.token.accessToken);
+    const resp = this.http.delete(this.REACTION_URL+"/"+reaction.id, {headers:headers})
+    const loader = MyApp.loadingController.create({content:"Aguarde..."});
+    loader.present();
+    resp.subscribe(
+      (conf)=>{
+        if (conf){
+          loader.dismiss();
+        }
+      },(error)=>{
+        loader.dismiss();
+        MyApp.presentAlert("Erro", JSON.stringify(error));
+      }
+    );  
+  }
+
+  getTotals(reports : Array<Report>){
+    /*
+    const headers = new Headers();
+    headers.append('Content-Type','application/json');
+    headers.append('Accept','application/json');
+    headers.append('Authorization',MyApp.user.token.tokenType+' '+MyApp.user.token.accessToken);
+    for (let report of reports){
+      console.log(this.REPORTS_URL+"/"+report.id+"/total");
+      const resp = this.http.get(this.REPORTS_URL+"/"+report.id+"/total", {headers:headers});
+      resp.subscribe(
+        (totals)=>{
+          console.log(totals);
+          
+        },(error)=>{
+          MyApp.presentAlert("Erro", JSON.stringify(error));
+        }
+      );
+    }
+    */
+
   }
 
 }

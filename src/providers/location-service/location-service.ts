@@ -87,7 +87,7 @@ export class LocationServiceProvider {
       location.number = "134";
       location.postalCode = "97200-000";
       */
-      location.city = "Santa Maria X";
+      location.city = "Santa Maria";
       location.state = "Rio Grande do Sul";
       location.uf = "RS";
       location.street = "Av. Roraima",

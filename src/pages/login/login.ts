@@ -45,6 +45,7 @@ export class LoginPage {
       this.email = user.email;
       this.password = user.password;
       this.errors = false;
+      this.doLogin();
       //this.navCtrl.setRoot(HomePage);
     }else{
       this.email = this.userService.getLastEmail();

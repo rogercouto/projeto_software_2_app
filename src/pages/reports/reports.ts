@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
 import { ReportDetailsPage, ReportPage } from '../'
 import { MyApp } from '../../app/app.component';
 import { Report } from '../../model';
+import { ReportServiceProvider } from '../../providers';
 /**
  * Generated class for the ReportsPage page.
  *
@@ -22,22 +23,63 @@ export class ReportsPage {
   protected mineReports = new Array<Report>();
   protected otherReports = new Array<Report>();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    for (let report of MyApp.reports){
-      if (MyApp.user.id == report.userId){
-        this.mineReports.push(report);
-      }else{
-        this.otherReports.push(report);
+  constructor(public navCtrl: NavController, public navParams: NavParams, public reportService: ReportServiceProvider, public events: Events) {
+    const loading = MyApp.loadingController.create({content:"Aguarde..."});
+    loading.present();
+    this.reportService.publishAll();
+    this.events.subscribe("reports:get", (reports)=>{
+      if (reports != null){
+        this.reportService.getTotals(reports);
+        this.sortReports(reports);
+        for (let report of reports){
+          if (MyApp.user.id == report.userId){
+            this.mineReports.push(report);
+          }else{
+            this.otherReports.push(report);
+          }
+        }
       }
-    }
+      loading.dismiss();
+    })
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ReportsPage');
   }
 
   openDetails(report: Report){
+    /*
+    const resp = this.reportService.getReactions(report.id);
+    const loader = MyApp.loadingController.create({content:"Aguarde..."});
+    loader.present();
+    resp.subscribe(
+      apiReactions =>{
+        for (let apiReaction of apiReactions){
+          const reaction = new Reaction();
+          reaction.id = apiReaction.id;
+          reaction.reaction = apiReaction.reaction == 1? true : false;
+          reaction.comment = apiReaction.comment;
+          reaction.userId = apiReaction.user_id;
+          reaction.reportId = apiReaction.report_id;
+          report.reactions.push(reaction);
+        }
+        loader.dismiss();
+        this.navCtrl.push(ReportDetailsPage, {report: report});
+      },
+      error => {
+        loader.dismiss();
+        MyApp.presentAlert("Erro", error);
+      }
+      );
+     */ 
     this.navCtrl.push(ReportDetailsPage, {report: report});
+
+    /*
+    this.reportService.publishReactions(report);
+    this.events.subscribe('reactions:get', (reactions)=>{
+      report.reactions = reactions;
+      this.navCtrl.push(ReportDetailsPage, {report: report});
+    })
+    */
   }
 
   report(){
@@ -46,6 +88,20 @@ export class ReportsPage {
 
   canReport(){
     return (MyApp.entity != null);
+  }
+
+  sortReports(reports : Array<Report>){
+    if (reports == null)
+      return;
+    return reports.sort((report1, report2) => {
+      if (report1.id < report2.id) {
+          return 1;
+      }
+      if (report1.id > report2.id) {
+          return -1;
+      }
+      return 0;
+    });
   }
 
 }

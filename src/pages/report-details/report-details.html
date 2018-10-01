@@ -19,7 +19,7 @@
     <ion-icon name="{{report.icon}}" item-start></ion-icon>
     <h2>{{report.description}}</h2>
     <p>{{report.address}}</p>
-    <p>Situação: ???</p>
+    <p>Situação: {{report.situation}}</p>
   </ion-item>
   <div *ngIf='report.photo != ""'>
     <img class="rep-photo" *ngIf="report.photo!=null" 
@@ -27,13 +27,20 @@
   </div>
   <ion-item>
     <p><b>Aberta em:</b> {{report.createdAt |  date:'dd/MM/yyyy'}}</p>
-    <!--
-      <div style="float: right;">
-        <ion-icon name="thumbs-up"></ion-icon> 5
+    <div *ngIf="!mine" style="margin-top: 10px; text-align: center;">
+      <button [disabled]="denounced" ion-button color="{{supportColor()}}" round (click)="support()">
+        <ion-icon name="thumbs-up"></ion-icon>&nbsp;Apoiar ({{report.positiveReactions}})
+      </button>
+      &nbsp;
+      <button [disabled]="supported" ion-button color="{{denounceColor()}}" round (click)="denounce()">
+        <ion-icon name="thumbs-down"></ion-icon>&nbsp;Denunciar ({{report.negativeReactions}})
+      </button>
+    </div>
+    <div *ngIf="mine" style="margin-top: 10px; text-align: center;">
+        Apoiadores&nbsp;<ion-icon name="thumbs-up"></ion-icon>: {{report.positiveReactions}}
         &nbsp;
-        <ion-icon name="thumbs-down"></ion-icon> 1
+        Denuncias&nbsp;<ion-icon name="thumbs-down"></ion-icon>: {{report.negativeReactions}}
       </div>
-    -->
   </ion-item>
   <!--
     <ion-item>

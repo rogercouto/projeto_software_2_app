@@ -31,7 +31,12 @@
                 <ion-icon name="{{report.icon}}" item-start></ion-icon>
                 <h2>{{report.description}}</h2>
                 <p>{{report.address}}</p>
-                <p>Situação: ???</p>
+                <p>Situação: {{report.situation}}</p>
+                <div style="float: right;">
+                  <ion-icon name="thumbs-up"></ion-icon> {{report.positiveReactions}}
+                  &nbsp;
+                  <ion-icon name="thumbs-down"></ion-icon> {{report.negativeReactions}}
+                </div>
             </button>  
         </ion-list>
         <ion-list *ngSwitchCase="'all'">
@@ -39,7 +44,12 @@
                 <ion-icon name="{{report.icon}}" item-start></ion-icon>
                 <h2>{{report.description}}</h2>
                 <p>{{report.address}}</p>
-                <p>Situação: ???</p>
+                <p>Situação: {{report.situation}}</p>
+                <div style="float: right;">
+                  <ion-icon name="thumbs-up"></ion-icon> {{report.positiveReactions}}
+                  &nbsp;
+                  <ion-icon name="thumbs-down"></ion-icon> {{report.negativeReactions}}
+                </div>
             </button>
         </ion-list>
       </div>
