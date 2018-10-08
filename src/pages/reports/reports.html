@@ -33,9 +33,15 @@
                 <p>{{report.address}}</p>
                 <p>Situação: {{report.situation}}</p>
                 <div style="float: right;">
-                  <ion-icon name="thumbs-up"></ion-icon> {{report.positiveReactions}}
+                  <ion-icon *ngIf="report.positiveReactions>0" name="thumbs-up" style="color: #00CC11;"></ion-icon> 
+                  <ion-icon *ngIf="report.positiveReactions==0" name="thumbs-up" style="color: #AAAAAA;"></ion-icon> 
+                  <span *ngIf="report.positiveReactions>0" style="color: #00CC11;">{{report.positiveReactions}}</span>
+                  <span *ngIf="report.positiveReactions==0" style="color: #AAAAAA;">{{report.positiveReactions}}</span>
                   &nbsp;
-                  <ion-icon name="thumbs-down"></ion-icon> {{report.negativeReactions}}
+                  <ion-icon *ngIf="report.negativeReactions>0" name="thumbs-down" style="color: #FF0000;"></ion-icon> 
+                  <ion-icon *ngIf="report.negativeReactions==0" name="thumbs-down" style="color: #AAAAAA;"></ion-icon> 
+                  <span *ngIf="report.negativeReactions>0" style="color: #FF0000;">{{report.negativeReactions}}</span>
+                  <span *ngIf="report.negativeReactions==0" style="color: #AAAAAA;">{{report.negativeReactions}}</span>
                 </div>
             </button>  
         </ion-list>
@@ -46,9 +52,15 @@
                 <p>{{report.address}}</p>
                 <p>Situação: {{report.situation}}</p>
                 <div style="float: right;">
-                  <ion-icon name="thumbs-up"></ion-icon> {{report.positiveReactions}}
+                  <ion-icon *ngIf="report.positiveReactions>0" name="thumbs-up" style="color: #00CC11;"></ion-icon> 
+                  <ion-icon *ngIf="report.positiveReactions==0" name="thumbs-up" style="color: #AAAAAA;"></ion-icon> 
+                  <span *ngIf="report.positiveReactions>0" style="color: #00CC11;">{{report.positiveReactions}}</span>
+                  <span *ngIf="report.positiveReactions==0" style="color: #AAAAAA;">{{report.positiveReactions}}</span>
                   &nbsp;
-                  <ion-icon name="thumbs-down"></ion-icon> {{report.negativeReactions}}
+                  <ion-icon *ngIf="report.negativeReactions>0" name="thumbs-down" style="color: #FF0000;"></ion-icon> 
+                  <ion-icon *ngIf="report.negativeReactions==0" name="thumbs-down" style="color: #AAAAAA;"></ion-icon> 
+                  <span *ngIf="report.negativeReactions>0" style="color: #FF0000;">{{report.negativeReactions}}</span>
+                  <span *ngIf="report.negativeReactions==0" style="color: #AAAAAA;">{{report.negativeReactions}}</span>
                 </div>
             </button>
         </ion-list>

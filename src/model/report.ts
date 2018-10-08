@@ -1,9 +1,10 @@
 import { MyApp } from "../app/app.component";
-import { Reaction } from "./reaction";
+import { Reaction, Update } from "./";
 
 export class Report{
 
     public reactions : Array<Reaction> = new Array<Reaction>();
+    public updates: Array<Update> = new Array<Update>();
 
     constructor(
         public id?:number,

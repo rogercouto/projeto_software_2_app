@@ -210,26 +210,14 @@ export class ReportServiceProvider {
     );  
   }
 
-  getTotals(reports : Array<Report>){
-    /*
+  getUpdates(report : Report):Observable<any>{
     const headers = new Headers();
     headers.append('Content-Type','application/json');
     headers.append('Accept','application/json');
     headers.append('Authorization',MyApp.user.token.tokenType+' '+MyApp.user.token.accessToken);
-    for (let report of reports){
-      console.log(this.REPORTS_URL+"/"+report.id+"/total");
-      const resp = this.http.get(this.REPORTS_URL+"/"+report.id+"/total", {headers:headers});
-      resp.subscribe(
-        (totals)=>{
-          console.log(totals);
-          
-        },(error)=>{
-          MyApp.presentAlert("Erro", JSON.stringify(error));
-        }
-      );
-    }
-    */
-
+    return this.http.get(this.REPORT_URL+"/"+report.id+"/status", {headers:headers})
+    .map(response => response.json()) 
+    .catch(error => Observable.throw(error));;
   }
 
 }

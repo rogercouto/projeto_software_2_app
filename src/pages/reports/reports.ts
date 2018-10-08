@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
 import { ReportDetailsPage, ReportPage } from '../'
 import { MyApp } from '../../app/app.component';
-import { Report } from '../../model';
+import { Report, Update } from '../../model';
 import { ReportServiceProvider } from '../../providers';
 /**
  * Generated class for the ReportsPage page.
@@ -29,7 +29,6 @@ export class ReportsPage {
     this.reportService.publishAll();
     this.events.subscribe("reports:get", (reports)=>{
       if (reports != null){
-        this.reportService.getTotals(reports);
         this.sortReports(reports);
         for (let report of reports){
           if (MyApp.user.id == report.userId){
@@ -47,6 +46,34 @@ export class ReportsPage {
   }
 
   openDetails(report: Report){
+    
+    const resp = this.reportService.getUpdates(report);
+    const loader = MyApp.loadingController.create({content:"Aguarde..."});
+    loader.present();
+    resp.subscribe(
+      apiUpdates =>{
+        const updates = new Array<Update>();
+        console.log(apiUpdates);
+        for (let apiUpdate of apiUpdates){
+          
+          const update = new Update();
+          update.id = apiUpdate.id;
+          update.description = apiUpdate.description;
+          update.reportId = apiUpdate.report_id;
+          update.userId = apiUpdate.user_id;
+          update.createdAt = new Date(apiUpdate.created_at);
+          updates.push(update);
+        }
+        report.updates = updates;
+        loader.dismiss();
+        this.navCtrl.push(ReportDetailsPage, {report: report});
+      },
+      error => {
+        loader.dismiss();
+        MyApp.presentAlert("Erro", error);
+      }
+    );
+    
     /*
     const resp = this.reportService.getReactions(report.id);
     const loader = MyApp.loadingController.create({content:"Aguarde..."});
@@ -71,7 +98,7 @@ export class ReportsPage {
       }
       );
      */ 
-    this.navCtrl.push(ReportDetailsPage, {report: report});
+    //this.navCtrl.push(ReportDetailsPage, {report: report});
 
     /*
     this.reportService.publishReactions(report);
