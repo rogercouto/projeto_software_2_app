@@ -53,9 +53,7 @@ export class ReportsPage {
     resp.subscribe(
       apiUpdates =>{
         const updates = new Array<Update>();
-        console.log(apiUpdates);
         for (let apiUpdate of apiUpdates){
-          
           const update = new Update();
           update.id = apiUpdate.id;
           update.description = apiUpdate.description;

@@ -55,16 +55,6 @@ export class MyApp {
     MyApp.user = this.userService.getLocalUser();
     if (MyApp.user != null)
       this.userName = MyApp.user.name;
-    this.events.subscribe("user:login", (user) => {
-      MyApp.user = user;
-      this.userName = user.name;
-      this.locationService.publishLocation();
-    });
-    this.entityService.publishAll();
-    this.events.subscribe("entities:publish", (entities)=>{
-      MyApp.entities = entities;
-    });
-    this.categoryService.publishAll(); 
     this.events.subscribe('location:publish', (location) => {
       //console.log(location);
       if (location != null){
@@ -73,16 +63,31 @@ export class MyApp {
         this.entityService.publishEntity();
       }
     });
-    this.events.subscribe('entity:publish', (entity)=>{
-      if (entity != null){
-        MyApp.entity = entity;
-        this.reportService.publishAll();
-      }else{
-        MyApp.autoLocation = false;
+    this.events.subscribe("user:login", (user) => {
+      MyApp.user = user;
+      this.userName = user.name;
+      this.locationService.publishLocation();
+      //
+      if (MyApp.user != null){
+        this.entityService.publishAll();
+        this.events.subscribe("entities:publish", (entities)=>{
+          MyApp.entities = entities;
+        });
+        this.categoryService.publishAll(); 
       }
-    });
-    this.events.subscribe("categories:get",(categories)=>{
-      MyApp.categories=categories;
+      
+      this.events.subscribe('entity:publish', (entity)=>{
+        if (entity != null){
+          MyApp.entity = entity;
+          this.reportService.publishAll();
+        }else{
+          MyApp.autoLocation = false;
+        }
+      });
+      this.events.subscribe("categories:get",(categories)=>{
+        MyApp.categories=categories;
+      });
+      //
     });
     
     this.initializeApp();
