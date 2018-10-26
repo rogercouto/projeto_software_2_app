@@ -10,6 +10,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { Camera } from '@ionic-native/camera';
 import { Push } from '@ionic-native/push';
+import { FCM } from '@ionic-native/fcm';
 
 import { MyApp } from './app.component';
 import { HomePage, ReportPage, ReportsPage, ReportFormPage, ReportDetailsPage,
@@ -67,7 +68,8 @@ import { File } from '@ionic-native/file';
     Camera,
     ReportServiceProvider,
     File,
-    Push
+    Push,
+    FCM
   ]
 })
 export class AppModule {}

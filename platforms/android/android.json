@@ -43,6 +43,10 @@
             {
               "xml": "<feature name=\"PushNotification\"><param name=\"android-package\" value=\"com.adobe.phonegap.push.PushPlugin\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"FCMPlugin\"><param name=\"android-package\" value=\"com.gae.scaffolder.plugin.FCMPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -119,6 +123,18 @@
             {
               "xml": "<service android:name=\"com.adobe.phonegap.push.PushInstanceIDListenerService\"><intent-filter><action android:name=\"com.google.firebase.INSTANCE_ID_EVENT\" /></intent-filter></service>",
               "count": 1
+            },
+            {
+              "xml": "<activity android:exported=\"true\" android:launchMode=\"singleTop\" android:name=\"com.gae.scaffolder.plugin.FCMPluginActivity\"><intent-filter><action android:name=\"FCM_PLUGIN_ACTIVITY\" /><category android:name=\"android.intent.category.DEFAULT\" /></intent-filter></activity>",
+              "count": 1
+            },
+            {
+              "xml": "<service android:name=\"com.gae.scaffolder.plugin.MyFirebaseMessagingService\"><intent-filter><action android:name=\"com.google.firebase.MESSAGING_EVENT\" /></intent-filter></service>",
+              "count": 1
+            },
+            {
+              "xml": "<service android:name=\"com.gae.scaffolder.plugin.MyFirebaseInstanceIDService\"><intent-filter><action android:name=\"com.google.firebase.INSTANCE_ID_EVENT\" /></intent-filter></service>",
+              "count": 1
             }
           ]
         }
@@ -162,6 +178,9 @@
     },
     "phonegap-plugin-push": {
       "FCM_VERSION": "11.6.2",
+      "PACKAGE_NAME": "projeto.SoftwareApp"
+    },
+    "cordova-plugin-fcm": {
       "PACKAGE_NAME": "projeto.SoftwareApp"
     }
   },
@@ -425,6 +444,14 @@
       "clobbers": [
         "PushNotification"
       ]
+    },
+    {
+      "id": "cordova-plugin-fcm.FCMPlugin",
+      "file": "plugins/cordova-plugin-fcm/www/FCMPlugin.js",
+      "pluginId": "cordova-plugin-fcm",
+      "clobbers": [
+        "FCMPlugin"
+      ]
     }
   ],
   "plugin_metadata": {
@@ -436,6 +463,7 @@
     "cordova-plugin-nativegeocoder": "3.1.2",
     "cordova-plugin-splashscreen": "5.0.2",
     "cordova-plugin-whitelist": "1.3.3",
-    "phonegap-plugin-push": "2.1.3"
+    "phonegap-plugin-push": "2.1.3",
+    "cordova-plugin-fcm": "2.1.2"
   }
 }

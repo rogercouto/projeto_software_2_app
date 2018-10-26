@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
 //import { Firebase } from '@ionic-native/firebase';
+import { FCM } from '@ionic-native/fcm';
 
 import { HomePage, LoginPage, ReportsPage,
    MessagesPage, NotificationsPage, SettingsPage } from '../pages';
@@ -44,6 +45,7 @@ export class MyApp {
     public splashScreen: SplashScreen,
     public push: Push,
     //public firebase: Firebase,
+    public fcm: FCM,
     private events : Events,
     private userService : UserServiceProvider,
     private locationService : LocationServiceProvider,
@@ -77,8 +79,24 @@ export class MyApp {
     this.events.subscribe("user:login", (user) => {
       MyApp.user = user;
       this.userName = user.name;
+      if (platform.is("cordova")){
+        this.fcm.getToken().then(
+          token =>{
+            if (MyApp.user != null){
+              MyApp.user.firebaseToken = token;
+              const resp = this.userService.updateFirebaseToken(MyApp.user);
+              resp.subscribe(
+                conf=>{
+                },
+                error=>{
+                  MyApp.presentAlert("Teste", JSON.stringify(error));
+                }
+              );
+            }
+          }
+        );
+      }
       this.locationService.publishLocation();
-      
       //
       if (MyApp.user != null){
         this.entityService.publishAll();
@@ -87,7 +105,6 @@ export class MyApp {
         });
         this.categoryService.publishAll(); 
       }
-      
       this.events.subscribe('entity:publish', (entity)=>{
         if (entity != null){
           MyApp.entity = entity;
@@ -167,8 +184,27 @@ export class MyApp {
   }
 
   exit(){
-    localStorage.removeItem('user');
-    this.nav.setRoot(LoginPage);
+    if (this.platform.is("cordova")){
+      const loading = MyApp.loadingController.create({content:"Saindo..."});
+      loading.present();
+      MyApp.user.firebaseToken = null;
+      const resp = this.userService.updateFirebaseToken(MyApp.user);
+      resp.subscribe(conf=>{
+          if (conf){
+            localStorage.removeItem('user');
+            this.nav.setRoot(LoginPage);
+            loading.dismiss();
+          }
+        },error=>{
+          loading.dismiss();
+          MyApp.presentAlert("Erro", error)
+        }
+      );
+    }else{
+      localStorage.removeItem('user');
+      this.nav.setRoot(LoginPage);
+      MyApp.presentAlert("Aviso","Not cordova!");
+    }
   }
 
   static presentAlert(title: string, message : string) {

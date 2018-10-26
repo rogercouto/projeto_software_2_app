@@ -8,7 +8,7 @@ export class User{
         public email?: string,
         public password?: string,
         public token?: Token,
-        public msgToken?: string
+        public firebaseToken?: string
     ){}
 
 }

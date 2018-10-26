@@ -156,4 +156,18 @@ export class UserServiceProvider {
       .catch(error => Observable.throw(error));
   }
 
+  updateFirebaseToken(user: User):Observable<any>{
+    const headers = new Headers();
+    headers.append('Content-Type','application/json');
+    headers.append('Accept','application/json');
+    headers.append('Authorization',user.token.tokenType+' '+user.token.accessToken);
+    const data = {
+      name : user.name,
+      token_firebase : user.firebaseToken
+    };
+    return this.http.put(this.USERS_URL, JSON.stringify(data), {headers:headers})
+      .map(response => response.json()) 
+      .catch(error => Observable.throw(error));
+  }
+
 }

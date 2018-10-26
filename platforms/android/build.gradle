@@ -93,6 +93,7 @@ ext {
 
 // PLUGIN GRADLE EXTENSIONS START
 apply from: "phonegap-plugin-push/SoftwareApp-push.gradle"
+apply from: "cordova-plugin-fcm/SoftwareApp-FCMPlugin.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras = file('build-extras.gradle').exists()
@@ -258,6 +259,8 @@ dependencies {
     compile "com.android.support:support-v13:26.+"
     compile "me.leolin:ShortcutBadger:1.1.17@aar"
     compile "com.google.firebase:firebase-messaging:11.6.2"
+    compile "com.google.firebase:firebase-core:+"
+    compile "com.google.firebase:firebase-messaging:+"
     // SUB-PROJECT DEPENDENCIES END
 }
 
