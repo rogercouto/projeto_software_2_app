@@ -2,6 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, AlertController, LoadingController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
+//import { Firebase } from '@ionic-native/firebase';
 
 import { HomePage, LoginPage, ReportsPage,
    MessagesPage, NotificationsPage, SettingsPage } from '../pages';
@@ -40,6 +42,8 @@ export class MyApp {
     public platform: Platform, 
     public statusBar: StatusBar, 
     public splashScreen: SplashScreen,
+    public push: Push,
+    //public firebase: Firebase,
     private events : Events,
     private userService : UserServiceProvider,
     private locationService : LocationServiceProvider,
@@ -49,6 +53,13 @@ export class MyApp {
     alertCtrl: AlertController,
     loadingCtrl: LoadingController
   ) {
+    platform.ready().then(() => {
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      statusBar.styleDefault();
+      splashScreen.hide();
+      this.pushsetup(alertCtrl);
+    });
     //this.locationService.publishLocation();
     MyApp.alertController = alertCtrl;
     MyApp.loadingController = loadingCtrl;
@@ -67,6 +78,7 @@ export class MyApp {
       MyApp.user = user;
       this.userName = user.name;
       this.locationService.publishLocation();
+      
       //
       if (MyApp.user != null){
         this.entityService.publishAll();
@@ -87,7 +99,15 @@ export class MyApp {
       this.events.subscribe("categories:get",(categories)=>{
         MyApp.categories=categories;
       });
-      //
+      /*
+      this.firebase.getToken()
+      .then(token => 
+        {
+          MyApp.presentAlert("Teste:", token);
+        }
+        ) // save the token server-side and use it to push notifications to this device
+      .catch(error => console.error('Error getting token', error));
+      */
     });
     
     this.initializeApp();
@@ -105,6 +125,22 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+    });
+  }
+
+  pushsetup(alertController : AlertController) {
+    const options: PushOptions = {};
+    const pushObject: PushObject = this.push.init(options);
+    pushObject.on("registration").subscribe((registration: any) => {});
+    pushObject.on("notification").subscribe((notification: any) => {
+      if (notification.additionalData.foreground) {
+        let youralert = alertController.create({
+          title: notification.label,
+          message: notification.message
+        });
+        youralert.present();
+        MyApp.presentAlert(notification.label, notification.message);
+      }
     });
   }
 

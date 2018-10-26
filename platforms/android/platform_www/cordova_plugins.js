@@ -41,44 +41,6 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-ionic-keyboard.keyboard",
-    "file": "plugins/cordova-plugin-ionic-keyboard/www/android/keyboard.js",
-    "pluginId": "cordova-plugin-ionic-keyboard",
-    "clobbers": [
-      "window.Keyboard"
-    ]
-  },
-  {
-    "id": "cordova-plugin-nativegeocoder.NativeGeocoder",
-    "file": "plugins/cordova-plugin-nativegeocoder/www/NativeGeocoder.js",
-    "pluginId": "cordova-plugin-nativegeocoder",
-    "clobbers": [
-      "nativegeocoder"
-    ]
-  },
-  {
-    "id": "cordova-plugin-splashscreen.SplashScreen",
-    "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
-    "pluginId": "cordova-plugin-splashscreen",
-    "clobbers": [
-      "navigator.splashscreen"
-    ]
-  },
-  {
-    "id": "cordova-plugin-geolocation.geolocation",
-    "file": "plugins/cordova-plugin-geolocation/www/android/geolocation.js",
-    "pluginId": "cordova-plugin-geolocation",
-    "clobbers": [
-      "navigator.geolocation"
-    ]
-  },
-  {
-    "id": "cordova-plugin-geolocation.PositionError",
-    "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
-    "pluginId": "cordova-plugin-geolocation",
-    "runs": true
-  },
-  {
     "id": "cordova-plugin-file.DirectoryEntry",
     "file": "plugins/cordova-plugin-file/www/DirectoryEntry.js",
     "pluginId": "cordova-plugin-file",
@@ -250,6 +212,52 @@ module.exports = [
       "cordova"
     ],
     "runs": true
+  },
+  {
+    "id": "cordova-plugin-geolocation.geolocation",
+    "file": "plugins/cordova-plugin-geolocation/www/android/geolocation.js",
+    "pluginId": "cordova-plugin-geolocation",
+    "clobbers": [
+      "navigator.geolocation"
+    ]
+  },
+  {
+    "id": "cordova-plugin-geolocation.PositionError",
+    "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
+    "pluginId": "cordova-plugin-geolocation",
+    "runs": true
+  },
+  {
+    "id": "cordova-plugin-ionic-keyboard.keyboard",
+    "file": "plugins/cordova-plugin-ionic-keyboard/www/android/keyboard.js",
+    "pluginId": "cordova-plugin-ionic-keyboard",
+    "clobbers": [
+      "window.Keyboard"
+    ]
+  },
+  {
+    "id": "cordova-plugin-nativegeocoder.NativeGeocoder",
+    "file": "plugins/cordova-plugin-nativegeocoder/www/NativeGeocoder.js",
+    "pluginId": "cordova-plugin-nativegeocoder",
+    "clobbers": [
+      "nativegeocoder"
+    ]
+  },
+  {
+    "id": "cordova-plugin-splashscreen.SplashScreen",
+    "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+    "pluginId": "cordova-plugin-splashscreen",
+    "clobbers": [
+      "navigator.splashscreen"
+    ]
+  },
+  {
+    "id": "phonegap-plugin-push.PushNotification",
+    "file": "plugins/phonegap-plugin-push/www/push.js",
+    "pluginId": "phonegap-plugin-push",
+    "clobbers": [
+      "PushNotification"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -257,12 +265,13 @@ module.exports.metadata =
 {
   "cordova-plugin-camera": "4.0.3",
   "cordova-plugin-device": "2.0.2",
-  "cordova-plugin-ionic-keyboard": "2.1.2",
+  "cordova-plugin-file": "6.0.1",
+  "cordova-plugin-geolocation": "4.0.1",
+  "cordova-plugin-ionic-keyboard": "2.1.3",
   "cordova-plugin-nativegeocoder": "3.1.2",
   "cordova-plugin-splashscreen": "5.0.2",
   "cordova-plugin-whitelist": "1.3.3",
-  "cordova-plugin-geolocation": "4.0.1",
-  "cordova-plugin-file": "6.0.1"
+  "phonegap-plugin-push": "2.1.3"
 };
 // BOTTOM OF METADATA
 });

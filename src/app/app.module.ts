@@ -9,6 +9,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { Camera } from '@ionic-native/camera';
+import { Push } from '@ionic-native/push';
 
 import { MyApp } from './app.component';
 import { HomePage, ReportPage, ReportsPage, ReportFormPage, ReportDetailsPage,
@@ -65,7 +66,8 @@ import { File } from '@ionic-native/file';
     NativeGeocoder,
     Camera,
     ReportServiceProvider,
-    File
+    File,
+    Push
   ]
 })
 export class AppModule {}

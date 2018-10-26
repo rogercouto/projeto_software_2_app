@@ -211,8 +211,7 @@ module.exports.best_image = function () {
         for (var i in images) {
             var target = images[i].target;
             if (target) {
-                //var num = target.split('(API level ')[1].replace(')', '');
-                var num = target.match(/\d+/)[0];
+                var num = target.split('(API level ')[1].replace(')', '');
                 if (num === project_target) {
                     return images[i];
                 } else if (project_target - num < closest && project_target > num) {
@@ -341,16 +340,9 @@ module.exports.wait_for_emulator = function (port) {
             }
             return self.wait_for_emulator(port);
         }, function (error) {
-            /*
             if ((error && error.message &&
             (error.message.indexOf('not found') > -1)) ||
-            (error.message.indexOf('device offline') > -1)) 
-                */
-            if ((error && error.message &&
-            (error.message.indexOf('not found') > -1)) ||
-            (error.message.indexOf('device offline') > -1) ||
-            (error.message.indexOf('device still connecting') > -1))   
-            {
+            (error.message.indexOf('device offline') > -1)) {
                 // emulator not yet started, continue waiting
                 return self.wait_for_emulator(port);
             } else {
