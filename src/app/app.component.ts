@@ -79,23 +79,23 @@ export class MyApp {
     this.events.subscribe("user:login", (user) => {
       MyApp.user = user;
       this.userName = user.name;
-      if (platform.is("cordova")){
-        this.fcm.getToken().then(
-          token =>{
-            if (MyApp.user != null){
-              MyApp.user.firebaseToken = token;
-              const resp = this.userService.updateFirebaseToken(MyApp.user);
-              resp.subscribe(
-                conf=>{
-                },
-                error=>{
-                  MyApp.presentAlert("Teste", JSON.stringify(error));
-                }
-              );
-            }
+    
+      this.fcm.getToken().then(
+        token =>{
+          if (MyApp.user != null){
+            MyApp.user.firebaseToken = token;
+            const resp = this.userService.updateFirebaseToken(MyApp.user);
+            resp.subscribe(
+              conf=>{
+              },
+              error=>{
+                MyApp.presentAlert("Teste", JSON.stringify(error));
+              }
+            );
           }
-        );
-      }
+        }
+      );
+      
       this.locationService.publishLocation();
       //
       if (MyApp.user != null){
@@ -184,27 +184,21 @@ export class MyApp {
   }
 
   exit(){
-    if (this.platform.is("cordova")){
-      const loading = MyApp.loadingController.create({content:"Saindo..."});
-      loading.present();
-      MyApp.user.firebaseToken = null;
-      const resp = this.userService.updateFirebaseToken(MyApp.user);
-      resp.subscribe(conf=>{
-          if (conf){
-            localStorage.removeItem('user');
-            this.nav.setRoot(LoginPage);
-            loading.dismiss();
-          }
-        },error=>{
+    const loading = MyApp.loadingController.create({content:"Saindo..."});
+    loading.present();
+    MyApp.user.firebaseToken = null;
+    const resp = this.userService.updateFirebaseToken(MyApp.user);
+    resp.subscribe(conf=>{
+        if (conf){
+          localStorage.removeItem('user');
+          this.nav.setRoot(LoginPage);
           loading.dismiss();
-          MyApp.presentAlert("Erro", error)
         }
-      );
-    }else{
-      localStorage.removeItem('user');
-      this.nav.setRoot(LoginPage);
-      MyApp.presentAlert("Aviso","Not cordova!");
-    }
+      },error=>{
+        loading.dismiss();
+        MyApp.presentAlert("Erro", error)
+      }
+    );
   }
 
   static presentAlert(title: string, message : string) {
