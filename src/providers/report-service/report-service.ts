@@ -70,8 +70,8 @@ export class ReportServiceProvider {
     .subscribe(
       data => {
         this.loader.dismiss();
-        //MyApp.presentAlert("Sucesso", "Relato enviado!");
-        MyApp.presentAlert("Sucesso", JSON.stringify(data));
+        MyApp.presentAlert("Sucesso", "Relato enviado!");
+        //MyApp.presentAlert("Sucesso", JSON.stringify(data));
         report.positiveReactions = 0;
         report.negativeReactions = 0;
         report.photo = data.photo;
@@ -216,6 +216,16 @@ export class ReportServiceProvider {
     headers.append('Accept','application/json');
     headers.append('Authorization',MyApp.user.token.tokenType+' '+MyApp.user.token.accessToken);
     return this.http.get(this.REPORT_URL+"/"+report.id+"/status", {headers:headers})
+    .map(response => response.json()) 
+    .catch(error => Observable.throw(error));;
+  }
+
+  getOne(reportId : number):Observable<any>{
+    const headers = new Headers();
+    headers.append('Content-Type','application/json');
+    headers.append('Accept','application/json');
+    headers.append('Authorization',MyApp.user.token.tokenType+' '+MyApp.user.token.accessToken);
+    return this.http.get(this.REPORT_URL+"/"+reportId, {headers:headers})
     .map(response => response.json()) 
     .catch(error => Observable.throw(error));;
   }

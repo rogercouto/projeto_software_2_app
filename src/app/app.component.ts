@@ -9,7 +9,7 @@ import { FCM } from '@ionic-native/fcm';
 import { HomePage, LoginPage, ReportsPage,
    MessagesPage, NotificationsPage, SettingsPage } from '../pages';
 
-import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider, CategoryServiceProvider, ReportServiceProvider } from '../providers';
+import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider, CategoryServiceProvider, ReportServiceProvider, NotificationServiceProvider } from '../providers';
 import { User, Location, Entity, Category } from '../model';
 
 @Component({
@@ -38,6 +38,7 @@ export class MyApp {
   public static loadingController : LoadingController;
 
   protected userName : string = "";
+  protected notifications : number = 0;
 
   constructor(
     public platform: Platform, 
@@ -52,6 +53,7 @@ export class MyApp {
     private entityService : EntityServiceProvider,
     private categoryService: CategoryServiceProvider,
     private reportService: ReportServiceProvider,
+    private notificationService: NotificationServiceProvider,
     alertCtrl: AlertController,
     loadingCtrl: LoadingController
   ) {
@@ -79,23 +81,32 @@ export class MyApp {
     this.events.subscribe("user:login", (user) => {
       MyApp.user = user;
       this.userName = user.name;
-    
-      this.fcm.getToken().then(
-        token =>{
-          if (MyApp.user != null){
-            MyApp.user.firebaseToken = token;
-            const resp = this.userService.updateFirebaseToken(MyApp.user);
-            resp.subscribe(
-              conf=>{
-              },
-              error=>{
-                MyApp.presentAlert("Teste", JSON.stringify(error));
-              }
-            );
+      if (platform.is("cordova")){
+        this.fcm.getToken().then(
+          token =>{
+            if (MyApp.user != null){
+              MyApp.user.firebaseToken = token;
+              const resp = this.userService.updateFirebaseToken(MyApp.user);
+              resp.subscribe(
+                conf=>{
+                },
+                error=>{
+                  MyApp.presentAlert("Teste", JSON.stringify(error));
+                }
+              );
+            }
           }
+        );
+      }
+      const notResp = this.notificationService.getUnreadedCount();
+      notResp.subscribe(
+        count=>{
+          this.notifications = count;
+        },
+        error=>{
+          MyApp.presentAlert("Erro", error)
         }
       );
-      
       this.locationService.publishLocation();
       //
       if (MyApp.user != null){
@@ -116,17 +127,14 @@ export class MyApp {
       this.events.subscribe("categories:get",(categories)=>{
         MyApp.categories=categories;
       });
-      /*
-      this.firebase.getToken()
-      .then(token => 
-        {
-          MyApp.presentAlert("Teste:", token);
+      this.events.subscribe("notification:view",(notification)=>{
+        if (notification.status == 0){
+          this.notifications--;
+          notification.status = 1;
+          //editar notificação e mudar o status para 1
         }
-        ) // save the token server-side and use it to push notifications to this device
-      .catch(error => console.error('Error getting token', error));
-      */
+      })
     });
-    
     this.initializeApp();
     // used for an example of ngFor and navigation
     this.pages = [

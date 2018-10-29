@@ -15,16 +15,17 @@
 
 </ion-header>
 
-
 <ion-content padding>
     <ion-list>
-        <button ion-item (click)="openDetails()">
-          <h2>Seu relato foi finalizado</h2>
-          <p>A lampada quebrada foi consertada </p>
-        </button>
-        <button ion-item>
-          <h2>Mensagens recebidas</h2>
-          <p>Você tem 3 mensagens não lidas</p>
+        <button *ngFor="let notification of notifications" ion-item (click)="openDetails(notification)">
+          <h2>
+            <span *ngIf="notification.status == 0" style="font-weight: bold;">{{notification.title}}</span>
+            <span *ngIf="notification.status != 0" style="font-weight: normal;">{{notification.title}}</span>
+          </h2>
+          <p>
+            <span *ngIf="notification.status == 0" style="font-weight: bold;">{{notification.content}}</span>
+            <span *ngIf="notification.status != 0" style="font-weight: normal;">{{notification.content}}</span>
+          </p>
         </button>
     </ion-list>
 </ion-content>

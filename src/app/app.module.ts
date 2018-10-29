@@ -18,6 +18,7 @@ import { HomePage, ReportPage, ReportsPage, ReportFormPage, ReportDetailsPage,
   import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider, CategoryServiceProvider } from '../providers';
 import { ReportServiceProvider } from '../providers/report-service/report-service';
 import { File } from '@ionic-native/file';
+import { NotificationServiceProvider } from '../providers/notification-service/notification-service';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { File } from '@ionic-native/file';
     ReportServiceProvider,
     File,
     Push,
-    FCM
+    FCM,
+    NotificationServiceProvider
   ]
 })
 export class AppModule {}

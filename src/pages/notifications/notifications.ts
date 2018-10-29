@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { NotificationServiceProvider, ReportServiceProvider } from '../../providers';
+import { Notification, Report, Reaction, Update } from '../../model';
+import { MyApp } from '../../app/app.component';
+import { ReportDetailsPage } from '../report-details/report-details';
 /**
  * Generated class for the NotificationsPage page.
  *
@@ -15,11 +18,114 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class NotificationsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  protected notifications : Array<Notification> = new Array<Notification>();
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public notificationService: NotificationServiceProvider,
+    public reportService: ReportServiceProvider,
+    public events: Events) 
+    {
+    const loader = MyApp.loadingController.create({content:"Aguarde..."});
+    loader.present();
+    const resp = this.notificationService.getNotifications();
+    resp.subscribe(
+      apiNotifications=>{
+        for (let apiNotification of apiNotifications){
+          const notification : Notification = new Notification();
+          notification.id = apiNotification.id;
+          notification.title = apiNotification.title;
+          notification.content = apiNotification.content;
+          notification.status = apiNotification.status;
+          notification.userId = apiNotification.userId;//useless?
+          notification.reportId = apiNotification.reportId;
+          notification.messageId = apiNotification.messageId; //later use
+          this.notifications.push(notification);
+        }
+        loader.dismiss();
+      }
+      ,error=>{
+        MyApp.presentAlert("Erro", JSON.stringify(error));
+        loader.dismiss();
+      }
+    );
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NotificationsPage');
+  }
+
+  openDetails(notification:Notification){
+    this.events.publish('notification:view',notification);
+    if (notification.reportId != null){
+      const loader = MyApp.loadingController.create({content:"Aguarde..."});
+      loader.present();
+      const resp = this.reportService.getOne(notification.reportId);
+      resp.subscribe(
+        apiReport =>{
+          const report : Report = new Report();
+          report.id = apiReport.id;
+            report.description = apiReport.description;
+            report.address = apiReport.address;
+            report.photo = apiReport.photo;
+            report.userId = apiReport.user_id;
+            report.entityId = apiReport.entity_id;
+            report.categoryId = apiReport.category_id;
+            report.lat = apiReport.lat;
+            report.lng = apiReport.lng;
+            report.createdAt = new Date(apiReport.created_at);
+            report.status = apiReport.status;
+            report.positiveReactions = 0;
+            report.negativeReactions = 0;
+            for(let apiReaction of apiReport.positives){
+              const reaction = new Reaction();
+              reaction.id = apiReaction.id;
+              reaction.reaction = true;
+              reaction.comment = apiReaction.comment;
+              reaction.reportId = apiReaction.report_id;
+              reaction.userId = apiReaction.user_id;
+              report.reactions.push(reaction);
+              report.positiveReactions++;
+            }
+            for(let apiReaction of apiReport.negatives){
+              const reaction = new Reaction();
+              reaction.id = apiReaction.id;
+              reaction.reaction = false;
+              reaction.comment = apiReaction.comment;
+              reaction.reportId = apiReaction.report_id;
+              reaction.userId = apiReaction.user_id;
+              report.reactions.push(reaction);
+              report.negativeReactions++;
+            }
+          const resp2 = this.reportService.getUpdates(report);
+          resp2.subscribe(
+            apiUpdates =>{
+              const updates = new Array<Update>();
+              for (let apiUpdate of apiUpdates){
+                const update = new Update();
+                update.id = apiUpdate.id;
+                update.description = apiUpdate.description;
+                update.reportId = apiUpdate.report_id;
+                update.userId = apiUpdate.user_id;
+                update.createdAt = new Date(apiUpdate.created_at);
+                updates.push(update);
+              }
+              report.updates = updates;
+              loader.dismiss();
+              this.navCtrl.push(ReportDetailsPage, {report: report});
+            },
+            error => {
+              loader.dismiss();
+              MyApp.presentAlert("Erro", error);
+            }
+          );
+        },
+        error=>{
+          loader.dismiss();
+          MyApp.presentAlert("Erro", JSON.stringify(error));
+        }
+      );      
+    }
   }
 
 }

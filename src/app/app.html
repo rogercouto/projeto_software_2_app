@@ -14,9 +14,11 @@
         <button menuClose ion-button item-end icon-center (click)="openSettings()" color="light">
           <ion-icon name="settings"></ion-icon>
         </button>
-        <button menuClose ion-button round item-end icon-center (click)="openNotifications()">
+        <button menuClose ion-button round item-end icon-center (click)="openNotifications()" color="{{notifications==0?'light':'primary'}}">
           <ion-icon name="notifications"></ion-icon>
-          <ion-badge item-end>5</ion-badge>
+          <ion-badge item-end color="{{notifications==0?'light':'primary'}}">
+            <span id="span_notifications">{{notifications}}</span>
+          </ion-badge>
         </button>
       </ion-item>
       <button menuClose ion-item [disabled]="!haveEntity()" *ngFor="let p of pages" (click)="openPage(p)">
