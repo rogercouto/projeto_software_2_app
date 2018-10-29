@@ -76,17 +76,16 @@ export class LocationServiceProvider {
         this.events.publish('location:publish', null);
       });
     }else{
+      /*
       const location = new Location();
       location.lat = 0;
       location.lng = 0;
-      /*
       location.city = "Restinga Seca";
       location.state = "Rio Grande do Sul";
       location.uf = "RS";
       location.street = "Rua José Celestino Alves",
       location.number = "134";
       location.postalCode = "97200-000";
-      */
       location.city = "Santa Maria";
       location.state = "Rio Grande do Sul";
       location.uf = "RS";
@@ -95,12 +94,13 @@ export class LocationServiceProvider {
       location.postalCode = "97105-900";
       lc.dismiss();
       this.events.publish('location:publish', location);
-      /*
+     */
       //console.log(location);
       MyApp.presentAlert("Aviso", "Não foi possível recuperar a localização atual!");
       lc.dismiss();
       this.events.publish('location:publish', null); 
-     */
+      /*
+      */
     }
   }
 

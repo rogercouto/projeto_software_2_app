@@ -12,7 +12,7 @@ import { ReportServiceProvider } from '../../providers';
 })
 export class HomePage {
 
-  protected city : string = "(Aguardando localização do dispositivo...)";
+  protected city : string = "(Aguardando localização...)";
 
   protected entityId : number;
   

@@ -17,6 +17,8 @@ export class NotificationServiceProvider {
   
   public readonly COUNT_URL = MyApp.SERVER_URL+"/api/notifications/user/status/";
 
+  public readonly UPDATE_URL = MyApp.SERVER_URL+"/api/notifications/";
+
   constructor(public http: Http) {
   }
 
@@ -39,7 +41,13 @@ export class NotificationServiceProvider {
   }
 
   setReaded(notification : Notification){
-    
+    const headers = new Headers();
+    headers.append('Content-Type','application/json');
+    headers.append('Authorization',MyApp.user.token.tokenType+' '+MyApp.user.token.accessToken);
+    const data = { status : true }
+    return this.http.put(this.UPDATE_URL+notification.id, JSON.stringify(data), {headers:headers})
+      .map(response => response.json())
+      .catch(error => Observable.throw(error));
   }
 
 }

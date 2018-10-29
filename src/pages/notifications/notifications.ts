@@ -38,9 +38,9 @@ export class NotificationsPage {
           notification.title = apiNotification.title;
           notification.content = apiNotification.content;
           notification.status = apiNotification.status;
-          notification.userId = apiNotification.userId;//useless?
-          notification.reportId = apiNotification.reportId;
-          notification.messageId = apiNotification.messageId; //later use
+          notification.userId = apiNotification.user_id;//useless?
+          notification.reportId = apiNotification.report_id;
+          notification.messageId = apiNotification.message_id; //later use
           this.notifications.push(notification);
         }
         loader.dismiss();
@@ -56,7 +56,13 @@ export class NotificationsPage {
   }
 
   openDetails(notification:Notification){
-    this.events.publish('notification:view',notification);
+    const update = (notification.status == 0)?true:false;
+    for(let i = 0; i < this.notifications.length; i++){
+      if (this.notifications[i].id == notification.id)
+        this.notifications[i].status = 1;
+    }
+    if (update)
+      this.events.publish('notification:view',notification);
     if (notification.reportId != null){
       const loader = MyApp.loadingController.create({content:"Aguarde..."});
       loader.present();

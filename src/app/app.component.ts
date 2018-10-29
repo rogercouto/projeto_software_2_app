@@ -128,11 +128,29 @@ export class MyApp {
         MyApp.categories=categories;
       });
       this.events.subscribe("notification:view",(notification)=>{
-        if (notification.status == 0){
-          this.notifications--;
-          notification.status = 1;
-          //editar notificação e mudar o status para 1
-        }
+        const resp = this.notificationService.setReaded(notification);
+        const loader = MyApp.loadingController.create();
+        loader.present();
+        resp.subscribe(
+          ret=>{
+            loader.dismiss();
+            const notResp = this.notificationService.getUnreadedCount();
+            notResp.subscribe(
+              count=>{
+                this.notifications = count;
+              },
+              error=>{
+                MyApp.presentAlert("Erro", error)
+              }
+            );
+            if (notification.reportId == null && notification.messageId == null)
+              this.nav.setRoot(NotificationsPage);
+          },
+          error=>{
+            MyApp.presentAlert("Erro", error);
+            loader.dismiss();
+          }
+        );
       })
     });
     this.initializeApp();
