@@ -5,6 +5,7 @@ import { ReportPage } from '../index';
 import { MyApp } from '../../app/app.component';
 import { Entity, Location } from '../../model';
 import { ReportServiceProvider } from '../../providers';
+import { LocalsPage } from '../locals/locals';
 
 @Component({
   selector: 'page-home',
@@ -12,7 +13,7 @@ import { ReportServiceProvider } from '../../providers';
 })
 export class HomePage {
 
-  protected city : string = "(Aguardando localização...)";
+  protected city : string = " ";
 
   protected entityId : number;
   
@@ -21,14 +22,11 @@ export class HomePage {
     public reportService : ReportServiceProvider,
     public events : Events
   ) {
-    if (MyApp.location != null)
-      this.city = MyApp.location.city+" - "+MyApp.location.uf;
-    if (!MyApp.autoLocation){
-      if (MyApp.entity != null)
-        this.entityId = MyApp.entity.id;
-    }
     if (MyApp.entity != null){
+      this.entityId = MyApp.entity.id;
       this.city = MyApp.entity.city.name+" - "+MyApp.entity.city.state.uf;
+    }else if (MyApp.location != null){
+      this.city = MyApp.location.city+" - "+MyApp.location.uf;
     }
   }
   
@@ -47,8 +45,12 @@ export class HomePage {
     return (MyApp.entity != null);
   }
 
-  isAutoLocation():boolean{
-    return MyApp.autoLocation;
+  isLocationSet():boolean{
+    return MyApp.entity != null;
+  }
+
+  haveLocation():boolean{
+    return MyApp.location != null;
   }
 
   getEntity():Entity{
@@ -70,6 +72,18 @@ export class HomePage {
     location.uf = MyApp.entity.city.state.uf;
     location.street = "";
     MyApp.location = location;
+  }
+
+  findLocal(){
+    this.navCtrl.push(LocalsPage, {redirect: HomePage});
+  }
+
+  cannotLocate():boolean{
+    return MyApp.cannotLocate;
+  }
+
+  showSelectButton():boolean{
+    return MyApp.cannotLocate;
   }
 
 }

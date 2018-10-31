@@ -10,7 +10,10 @@ export class Location{
         public number?:string,
         public postalCode?:string
     )
-    {}
+    {
+        this.lat = 0;
+        this.lng = 0;
+    }
 
 
 }

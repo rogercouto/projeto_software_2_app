@@ -3,6 +3,9 @@ import { IonicPage, NavController, NavParams, AlertController, LoadingController
 import { UserServiceProvider } from '../../providers';
 import { User } from '../../model';
 import { HomePage } from '../';
+import { LocalsPage } from '../locals/locals';
+import { MyApp } from '../../app/app.component';
+import { LoginPage } from '../login/login';
 
 /**
  * Generated class for the SettingsPage page.
@@ -113,6 +116,28 @@ export class SettingsPage {
         lc.dismiss();
         console.log(err);
         this.showAlert(JSON.stringify(err));
+      }
+    );
+  }
+
+  findLocal(){
+    this.navCtrl.push(LocalsPage, {redirect: SettingsPage});
+  }
+  
+  logout(){
+    const loading = MyApp.loadingController.create({content:"Saindo..."});
+    loading.present();
+    MyApp.user.firebaseToken = null;
+    const resp = this.userService.updateFirebaseToken(MyApp.user);
+    resp.subscribe(conf=>{
+        if (conf){
+          localStorage.removeItem('user');
+          this.navCtrl.setRoot(LoginPage);
+          loading.dismiss();
+        }
+      },error=>{
+        loading.dismiss();
+        MyApp.presentAlert("Erro", error)
       }
     );
   }

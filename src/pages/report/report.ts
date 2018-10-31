@@ -18,11 +18,14 @@ import { MyApp } from '../../app/app.component';
 })
 export class ReportPage {
 
-  protected categories : Array<Category>;
+  protected allCategories : Array<Category>;
+  protected categories : Array<Category> = new Array<Category>();
 
   constructor(public navCtrl: NavController) {
-    if (MyApp.categories.length > 0)
-      this.categories = MyApp.categories;
+    if (MyApp.categories.length > 0){
+      this.allCategories = MyApp.categories;
+      this.categories = this.allCategories;
+    }
   }
 
   ionViewDidLoad() {
@@ -32,5 +35,16 @@ export class ReportPage {
     this.navCtrl.push(ReportFormPage, {selectedCategory: category});
   }
 
+  filterCategory(ev){
+    const text : string = ev.target.value;
+    if (text.length > 0){
+      this.categories = this.allCategories.filter((category: Category) => 
+        category.name.toUpperCase().includes(text.toUpperCase()) ||
+        category.description.toUpperCase().includes(text.toUpperCase()) 
+      );
+    }else{
+      this.categories = this.allCategories;
+    }
+  }
 }
 

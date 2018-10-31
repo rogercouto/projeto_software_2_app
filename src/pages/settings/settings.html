@@ -14,6 +14,8 @@
 
 </ion-header>
 <ion-content padding>
+  <button (click)="findLocal()" ion-button secondary block round>Procurar entidade</button>
+  <p>Dados pessoais:</p>
   <form (ngSubmit)="save()">
     <ion-item>
       <ion-label color="primary" floating>Nome</ion-label>
@@ -35,4 +37,6 @@
     </ion-item>
     <button [disabled]="!valid" type="submit" ion-button block round style="margin-top: 25px;float: right;">Salvar</button>
   </form>
+  <br/>
+  <button (click)="logout()" ion-button secondary block round>Deslogar</button>
 </ion-content>

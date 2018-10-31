@@ -28,12 +28,11 @@ export class MyApp {
   //Atributos estáticos
   public static user : User = null;
   public static location : Location = null;
+  public static cannotLocate = false;
   public static entities : Array<Entity> = new Array<Entity>();
   public static entity: Entity = null;
   public static categories: Array<Category> = null;
   
-  public static autoLocation : boolean = false;
-
   private static alertController : AlertController;
   public static loadingController : LoadingController;
 
@@ -74,7 +73,6 @@ export class MyApp {
       //console.log(location);
       if (location != null){
         MyApp.location = location;
-        MyApp.autoLocation = true;
         this.entityService.publishEntity();
       }
     });
@@ -120,8 +118,6 @@ export class MyApp {
         if (entity != null){
           MyApp.entity = entity;
           this.reportService.publishAll();
-        }else{
-          MyApp.autoLocation = false;
         }
       });
       this.events.subscribe("categories:get",(categories)=>{
@@ -210,6 +206,7 @@ export class MyApp {
   }
 
   exit(){
+    /*
     const loading = MyApp.loadingController.create({content:"Saindo..."});
     loading.present();
     MyApp.user.firebaseToken = null;
@@ -225,6 +222,8 @@ export class MyApp {
         MyApp.presentAlert("Erro", error)
       }
     );
+    */
+    this.platform.exitApp();
   }
 
   static presentAlert(title: string, message : string) {

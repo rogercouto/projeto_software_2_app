@@ -57,10 +57,10 @@ export class LocationServiceProvider {
               location.postalCode = data.Response.View[0].Result[0].Location.Address.PostalCode;
               location.uf = data.Response.View[0].Result[0].Location.Address.State;
               this.events.publish('location:publish', location);
-              lc.dismiss();
               const element = document.getElementById('inputcity');
               if (element != null)
                 element.textContent = location.city+" - "+location.uf;
+              lc.dismiss();
             },
             err => {
               lc.dismiss();
@@ -72,6 +72,7 @@ export class LocationServiceProvider {
       }).catch((error) => { 
         //MyApp.presentAlert("Erro", JSON.stringify(error));
         lc.dismiss();
+        MyApp.cannotLocate = true;
         MyApp.presentAlert("Aviso", "Não foi possível recuperar a localização atual!");
         this.events.publish('location:publish', null);
       });
@@ -96,7 +97,8 @@ export class LocationServiceProvider {
       this.events.publish('location:publish', location);
      */
       //console.log(location);
-      MyApp.presentAlert("Aviso", "Não foi possível recuperar a localização atual!");
+      MyApp.cannotLocate = true;
+      MyApp.presentAlert("Aviso", "Não foi possível obter a localizção!");
       lc.dismiss();
       this.events.publish('location:publish', null); 
       /*
@@ -113,6 +115,7 @@ export class LocationServiceProvider {
     return url;
   }
 
+  /*
   publishLocationX(showLoading = false){
     const lc = MyApp.loadingController.create({content:"Verificando localização..."});
     if (showLoading)
@@ -152,5 +155,6 @@ export class LocationServiceProvider {
     }  
       
   }
+  */
 
 }

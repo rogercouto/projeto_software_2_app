@@ -14,7 +14,7 @@ import { FCM } from '@ionic-native/fcm';
 
 import { MyApp } from './app.component';
 import { HomePage, ReportPage, ReportsPage, ReportFormPage, ReportDetailsPage,
-  MessageFormPage, MessagesPage, NotificationsPage, LoginPage, RegisterPage, SettingsPage } from '../pages/';
+  MessageFormPage, MessagesPage, NotificationsPage, LoginPage, RegisterPage, SettingsPage, LocalsPage } from '../pages/';
   import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider, CategoryServiceProvider } from '../providers';
 import { ReportServiceProvider } from '../providers/report-service/report-service';
 import { File } from '@ionic-native/file';
@@ -33,7 +33,8 @@ import { NotificationServiceProvider } from '../providers/notification-service/n
     MessagesPage,
     NotificationsPage,
     RegisterPage,
-    SettingsPage
+    SettingsPage,
+    LocalsPage
   ],
   imports: [
     BrowserModule,
@@ -54,7 +55,8 @@ import { NotificationServiceProvider } from '../providers/notification-service/n
     MessagesPage,
     NotificationsPage,
     RegisterPage,
-    SettingsPage
+    SettingsPage,
+    LocalsPage
   ],
   providers: [
     StatusBar,

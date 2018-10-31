@@ -10,25 +10,28 @@
 <ion-content padding>
   <h3>Bem vindo ao Cidade Unida</h3>
   <p>
-    APP desenvolvido para desburocratizar o processo de relatar probleams nos municípios
+    APP desenvolvido para desburocratizar o processo de relatar problemas nos municípios
   </p>
-  <ion-item class="nli" *ngIf="isAutoLocation()">
+  <ion-item class="nli">
     <ion-label floating><ion-icon name="pin"></ion-icon>Sua localidade: </ion-label>
     <ion-input id="inputcity" [(ngModel)]="city" name="city" readonly="true"></ion-input>
   </ion-item>
-  <ion-item class="nli" *ngIf="!isAutoLocation()">
-      <ion-label floating><ion-icon name="pin"></ion-icon>Sua localidade: </ion-label>
-      <ion-select [(ngModel)]="entityId" (ionChange)="selectEntity()">
-        <ion-option *ngFor="let e of entities" value="{{e.id}}">{{e.name}}</ion-option>
-      </ion-select>
-    </ion-item>
+  
   <!--
+  <ion-item class="nli" *ngIf="!isLocationSet()">
+    <ion-label floating><ion-icon name="pin"></ion-icon>Sua localidade: </ion-label>
+    <ion-select [(ngModel)]="entityId" (ionChange)="selectEntity()">
+      <ion-option *ngFor="let e of entities" value="{{e.id}}">{{e.name}}</ion-option>
+    </ion-select>
+  </ion-item>
     <ion-icon name="pin"></ion-icon>Seu município:<span id="spancity">{{city}}</span>
-
+    
     <ion-label floating><ion-icon name="pin"></ion-icon>Seu município: </ion-label>
     <ion-input [(ngModel)]="city" name="city" readonly="true" (ionFocus)="refresh()" (ionBlur)="refresh()"></ion-input>
   -->
   <br />
-  <span *ngIf="!canReport()" id="spanNoEntity" style="margin-left: 25px;color: red;">Nenhuma entidade nessa localidade!</span>
+  <span *ngIf="cannotLocate() && !isLocationSet()" id="spanNoEntity" style="margin-left: 25px;color: red;">Não foi possível obter a localização!</span>
+  <button *ngIf="cannotLocate() && !isLocationSet()" (click)="findLocal()" ion-button secondary block round>Procurar entidade</button>
+  <span *ngIf="haveLocation()&&!canReport()" id="spanNoEntity" style="margin-left: 25px;color: red;">Nenhuma entidade nessa localidade!</span>
   <button id="btnReport1" [disabled]="!canReport()" (click)="reportPage()" (ionFocus)="refresh()" ion-button secondary block round>Relatar problema</button>
 </ion-content>

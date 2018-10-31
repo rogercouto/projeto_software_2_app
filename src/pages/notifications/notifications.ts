@@ -43,6 +43,7 @@ export class NotificationsPage {
           notification.messageId = apiNotification.message_id; //later use
           this.notifications.push(notification);
         }
+        this.notifications = this.notifications.reverse();
         loader.dismiss();
       }
       ,error=>{

@@ -21,7 +21,7 @@
           </ion-badge>
         </button>
       </ion-item>
-      <button menuClose ion-item [disabled]="!haveEntity()" *ngFor="let p of pages" (click)="openPage(p)">
+      <button menuClose ion-item [disabled]="p.index >0 && !haveEntity()" *ngFor="let p of pages" (click)="openPage(p)">
         <ion-icon name="{{p.icon}}" item-start></ion-icon>{{p.title}}
         <ion-badge id="{{p.notificationId}}" *ngIf="p.notifications > 0" item-end>{{p.notifications}}</ion-badge>
       </button>

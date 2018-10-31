@@ -41,7 +41,7 @@ export class CategoryServiceProvider {
             category.id = apiCategory.id;
             category.name = apiCategory.name;
             category.description = apiCategory.description;
-            category.icon = apiCategory.icon;
+            category.icon = apiCategory.icon != null ? apiCategory.icon : "clipboard";
             categories.push(category);
           }
         }

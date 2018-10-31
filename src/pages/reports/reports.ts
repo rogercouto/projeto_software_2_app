@@ -33,7 +33,7 @@ export class ReportsPage {
         for (let report of reports){
           if (MyApp.user.id == report.userId){
             this.mineReports.push(report);
-          }else{
+          }else if(report.status != 3){
             this.otherReports.push(report);
           }
         }

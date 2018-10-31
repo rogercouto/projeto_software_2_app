@@ -9,3 +9,4 @@ export * from './notifications/notifications';
 export * from './login/login';
 export * from './register/register';
 export * from './settings/settings';
+export * from './locals/locals';
