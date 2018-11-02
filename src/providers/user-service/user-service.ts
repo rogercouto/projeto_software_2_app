@@ -145,11 +145,13 @@ export class UserServiceProvider {
     headers.append('Accept','application/json');
     headers.append('Authorization',user.token.tokenType+' '+user.token.accessToken);
     const data = (confirmPass == "") ? {
-      name : user.name
+      name : user.name,
+      token_firebase : user.firebaseToken
     }:{
       name : user.name,
       password: user.password,
-      password_confirmation: confirmPass
+      password_confirmation: confirmPass,
+      token_firebase : user.firebaseToken
     }
     return this.http.put(this.USERS_URL, JSON.stringify(data), {headers:headers})
       .map(response => response.json()) 

@@ -9,7 +9,7 @@
     <ion-list>
       <ion-item color="light" class="nli">
         <ion-icon name="person"></ion-icon>
-        {{userName}}
+        <span id="spanuser">{{userName}}</span>
         <!--<ion-input  [(ngModel)]="userName" name="userName" readonly="true"></ion-input>-->
         <button menuClose ion-button item-end icon-center (click)="openSettings()" color="light">
           <ion-icon name="settings"></ion-icon>
@@ -26,7 +26,7 @@
         <ion-badge id="{{p.notificationId}}" *ngIf="p.notifications > 0" item-end>{{p.notifications}}</ion-badge>
       </button>
       <button menuClose ion-item (click)="exit()">
-        <ion-icon name="exit" item-start></ion-icon>Sair
+        <ion-icon name="exit" item-start></ion-icon>Fechar
       </button>
     </ion-list>
   </ion-content>

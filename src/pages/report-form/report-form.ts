@@ -36,8 +36,12 @@ export class ReportFormPage {
   ) {
     this.category = this.navParams.get('selectedCategory');
     this.report.address = MyApp.location.street;
-    if (MyApp.location.number != null && MyApp.location.number != undefined)
-      this.report.address += ", "+MyApp.location.number;
+    if (MyApp.location.street.length != 0){
+      if (MyApp.location.number != null && MyApp.location.number != undefined)
+        this.report.address += ", "+MyApp.location.number;
+    }else{
+      this.report.address = "";
+    }
   }
 
   ionViewDidLoad() {

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers';
 import { User } from '../../model';
-import { HomePage } from '../';
 import { LocalsPage } from '../locals/locals';
 import { MyApp } from '../../app/app.component';
 import { LoginPage } from '../login/login';
@@ -107,10 +106,18 @@ export class SettingsPage {
         updatedUser.id = this.user.id;
         updatedUser.name = this.name;
         updatedUser.email = this.user.email;
+        if (!this.togglePass)
+          updatedUser.password = MyApp.user.password;
         updatedUser.token = this.user.token;
         this.userService.saveLocalUser(updatedUser);
-        this.navCtrl.setRoot(HomePage);
+        MyApp.user = updatedUser;
         lc.dismiss();
+        const element = document.getElementById("spanuser");
+        if (element != null){
+          element.textContent = updatedUser.name;
+        }
+        MyApp.presentAlert("Confirmação", "Usuário atualizado!");
+        //this.navCtrl.setRoot(HomePage);
       },
       err =>{
         lc.dismiss();

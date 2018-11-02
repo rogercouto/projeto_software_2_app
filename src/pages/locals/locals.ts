@@ -27,6 +27,8 @@ export class LocalsPage {
     public entityService: EntityServiceProvider) 
   {
     this.redirectPage = this.navParams.get('redirect');
+    const loading = MyApp.loadingController.create({content:"Aguarde..."});
+    loading.present();
     const resp = this.entityService.gerAll();
     resp.subscribe(
       apiEntities=>{
@@ -47,9 +49,12 @@ export class LocalsPage {
           entity.city.state.uf = apiEntity.city.state.uf;
           entity.city.state.name = apiEntity.city.state.name;
           this.allEntities.push(entity);
-      }
+        }
+        this.filtredEntities = this.allEntities;
+        loading.dismiss();
       },
       error=>{
+        loading.dismiss();
         MyApp.presentAlert("Erro!", error);
       }
     );
@@ -68,7 +73,7 @@ export class LocalsPage {
         entity.city.state.uf.toUpperCase().includes(text.toUpperCase())
       );
     }else{
-      this.filtredEntities = new Array<Entity>();
+      this.filtredEntities = this.allEntities;
     }
   }
 
