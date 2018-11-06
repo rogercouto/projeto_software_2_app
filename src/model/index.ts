@@ -9,3 +9,4 @@ export * from './report';
 export * from './reaction';
 export * from './update';
 export * from './notification';
+export * from './contact';

@@ -112,4 +112,23 @@ export class EntityServiceProvider {
       );
   }
 
+  static create(data:any):Entity{
+    const entity = new Entity();
+    entity.id = data.id;
+    entity.name = data.name;
+    entity.phone = data.phone;
+    entity.email = data.email;
+    entity.street = data.street;
+    entity.number = data.number;
+    entity.complement = data.complement;
+    entity.city = new City();
+    entity.city.id = data.city.id;
+    entity.city.name = data.city.name;
+    entity.city.state = new State();
+    entity.city.state.id = data.city.state.id;
+    entity.city.state.uf = data.city.state.uf;
+    entity.city.state.name = data.city.state.name;
+    return entity;
+  }
+
 }

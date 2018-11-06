@@ -14,31 +14,13 @@
 </ion-header>
 
 <ion-content padding>
-    <div padding>
-      <ion-segment [(ngModel)]="sel">
-        <ion-segment-button value="recieved">
-          Recebidas
-        </ion-segment-button>
-        <ion-segment-button value="all">
-          Enviadas
-        </ion-segment-button>
-      </ion-segment>
-    </div>
-    <div [ngSwitch]="sel">
-      <ion-list *ngSwitchCase="'recieved'">
-          <button ion-item (click)="openDetails()">
-            <h2>Assunto: Feedback</h2>
-            <p>Agradecemos seu contato...</p>
-          </button>
-          <button ion-item>
-            <h2>Assunto: Sugestão</h2>
-            <p>Agradecemos seu contato...</p>
-          </button>
-      </ion-list>
-      <ion-list *ngSwitchCase="'send'"> 
-      </ion-list>
-    </div>
-    <ion-fab right bottom>
-      <button ion-fab color="primary" (click)="openMessageForm()"><ion-icon name="paper-plane"></ion-icon></button>
-    </ion-fab>
+  <ion-list>
+    <button *ngFor="let contact of contacts" ion-item (click)="openDetails(contact)">
+      <h2>{{contact.subject}}</h2>
+      <p>{{contact.content}}</p>
+    </button>
+  </ion-list>  
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="openMessageForm()"><ion-icon name="paper-plane"></ion-icon></button>
+  </ion-fab>
 </ion-content>

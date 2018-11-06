@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { MessageFormPage } from '../';
+import { ContactServiceProvider } from '../../providers';
+import { Contact } from '../../model';
+import { MyApp } from '../../app/app.component';
+import { MessageDetailsPage } from '../message-details/message-details';
 /**
  * Generated class for the MessagesPage page.
  *
@@ -16,13 +20,36 @@ import { MessageFormPage } from '../';
 })
 export class MessagesPage {
  
-  protected sel: string = "recieved";
+  protected contacts : Array<Contact> = new Array<Contact>();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private contactService : ContactServiceProvider
+  ){
+    const resp = this.contactService.getAll();
+    const loader = MyApp.loadingController.create({content:"Aguarde..."});
+    loader.present();
+    resp.subscribe(
+      apiContacts=>{
+        this.contacts = new Array<Contact>();
+        for(let apiContact of apiContacts){
+          const contact = ContactServiceProvider.create(apiContact);
+          this.contacts.push(contact);
+        }
+        loader.dismiss();
+      },
+      error=>{
+        loader.dismiss();
+        MyApp.presentAlert("Erro!", JSON.stringify(error));
+      }
+    );
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MessagesPage');
+  ionViewDidLoad() {}
+
+  openDetails(contact : Contact){
+    this.navCtrl.push(MessageDetailsPage, {contact: contact});
   }
 
   openMessageForm(){

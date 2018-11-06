@@ -14,11 +14,12 @@ import { FCM } from '@ionic-native/fcm';
 
 import { MyApp } from './app.component';
 import { HomePage, ReportPage, ReportsPage, ReportFormPage, ReportDetailsPage,
-  MessageFormPage, MessagesPage, NotificationsPage, LoginPage, RegisterPage, SettingsPage, LocalsPage } from '../pages/';
+  MessageFormPage, MessagesPage, NotificationsPage, LoginPage, RegisterPage, SettingsPage, LocalsPage, MessageDetailsPage } from '../pages/';
   import { UserServiceProvider, LocationServiceProvider, EntityServiceProvider, CategoryServiceProvider } from '../providers';
 import { ReportServiceProvider } from '../providers/report-service/report-service';
 import { File } from '@ionic-native/file';
 import { NotificationServiceProvider } from '../providers/notification-service/notification-service';
+import { ContactServiceProvider } from '../providers/contact-service/contact-service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { NotificationServiceProvider } from '../providers/notification-service/n
     NotificationsPage,
     RegisterPage,
     SettingsPage,
-    LocalsPage
+    LocalsPage,
+    MessageDetailsPage
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,8 @@ import { NotificationServiceProvider } from '../providers/notification-service/n
     NotificationsPage,
     RegisterPage,
     SettingsPage,
-    LocalsPage
+    LocalsPage,
+    MessageDetailsPage
   ],
   providers: [
     StatusBar,
@@ -73,7 +76,8 @@ import { NotificationServiceProvider } from '../providers/notification-service/n
     File,
     Push,
     FCM,
-    NotificationServiceProvider
+    NotificationServiceProvider,
+    ContactServiceProvider
   ]
 })
 export class AppModule {}

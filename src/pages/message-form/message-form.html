@@ -5,27 +5,26 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
     <ion-title>Enviar mensagem</ion-title>
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content padding>
   <ion-item>
       <b>Para: </b>
+      <p>
       <ion-icon name="pin"></ion-icon>
-      Santa Maria - RS
+      <span style="overflow: inherit ;text-overflow: inherit ;white-space: normal;">{{entity.name}}</span>
+      </p>
   </ion-item>
   <ion-item>
     <ion-label floating>Assunto</ion-label>
-    <ion-input type="text"></ion-input>
+    <ion-input type="text" [(ngModel)]="contact.subject" name="subject"></ion-input>
   </ion-item>
   <ion-item>
       <ion-label floating>Mensagem</ion-label>
-      <ion-textarea rows="10" style="height: 150px;"></ion-textarea>
+      <ion-textarea rows="10" style="height: 150px;" [(ngModel)]="contact.content" name="content"></ion-textarea>
   </ion-item>
-  <button ion-button round block style="margin-top: 25px;">Enviar&nbsp;<ion-icon name="paper-plane"></ion-icon></button>
+  <button ion-button round block style="margin-top: 25px;" (click)="send()">Enviar&nbsp;<ion-icon name="paper-plane"></ion-icon></button>
 </ion-content>
