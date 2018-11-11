@@ -2,7 +2,7 @@ import { Http, Headers } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { MyApp } from '../../app/app.component';
 import { Observable } from 'rxjs/Observable';
-import { Contact } from '../../model';
+import { Contact, Answer, User } from '../../model';
 
 /*
   Generated class for the ContactServiceProvider provider.
@@ -77,6 +77,20 @@ export class ContactServiceProvider {
     contact.content = data.content;
     contact.userId = data.user_id;
     contact.entityId = data.entity_id;
+    for(let dataAnswer of data.answers){
+      const answer = new Answer();
+      answer.id = dataAnswer.id;
+      answer.subject = dataAnswer.subject;
+      answer.content = dataAnswer.content;
+      answer.userId = dataAnswer.user_id;
+      answer.contactId = dataAnswer.contact_id;
+      answer.user = new User();
+      answer.user.id = dataAnswer.user.id;
+      answer.user.name = dataAnswer.user.name;
+      answer.user.email = dataAnswer.user.email;
+      //don't need get firebaseToken
+      contact.answers.push(answer);
+    }
     return contact;
   }
 

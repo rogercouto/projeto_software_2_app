@@ -14,6 +14,7 @@
 </ion-header>
 
 <ion-content padding>
+  <p *ngIf="contacts.length == 0">Nenhuma mensagem para mostrar.</p>
   <ion-list>
     <button *ngFor="let contact of contacts" ion-item (click)="openDetails(contact)">
       <h2>{{contact.subject}}</h2>

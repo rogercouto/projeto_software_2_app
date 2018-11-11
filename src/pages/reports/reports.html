@@ -14,58 +14,60 @@
 
 </ion-header>
 <ion-content>
-    <div padding>
-        <ion-segment [(ngModel)]="sel">
-          <ion-segment-button value="mines">
-            Meus
-          </ion-segment-button>
-          <ion-segment-button value="all">
-            Outros
-          </ion-segment-button>
-        </ion-segment>
-      </div>
-      
-      <div [ngSwitch]="sel">
-        <ion-list *ngSwitchCase="'mines'">
-            <button *ngFor="let report of mineReports" ion-item (click)="openDetails(report)">
-                <ion-icon name="{{report.icon}}" item-start></ion-icon>
-                <h2>{{report.description}}</h2>
-                <p>{{report.address}}</p>
-                <p>Situação: {{report.situation}}</p>
-                <div style="float: right;">
-                  <ion-icon *ngIf="report.positiveReactions>0" name="thumbs-up" style="color: #00CC11;"></ion-icon> 
-                  <ion-icon *ngIf="report.positiveReactions==0" name="thumbs-up" style="color: #AAAAAA;"></ion-icon> 
-                  <span *ngIf="report.positiveReactions>0" style="color: #00CC11;">{{report.positiveReactions}}</span>
-                  <span *ngIf="report.positiveReactions==0" style="color: #AAAAAA;">{{report.positiveReactions}}</span>
-                  &nbsp;
-                  <ion-icon *ngIf="report.negativeReactions>0" name="thumbs-down" style="color: #FF0000;"></ion-icon> 
-                  <ion-icon *ngIf="report.negativeReactions==0" name="thumbs-down" style="color: #AAAAAA;"></ion-icon> 
-                  <span *ngIf="report.negativeReactions>0" style="color: #FF0000;">{{report.negativeReactions}}</span>
-                  <span *ngIf="report.negativeReactions==0" style="color: #AAAAAA;">{{report.negativeReactions}}</span>
-                </div>
-            </button>  
-        </ion-list>
-        <ion-list *ngSwitchCase="'all'">
-            <button *ngFor="let report of otherReports" ion-item (click)="openDetails(report)">
-                <ion-icon name="{{report.icon}}" item-start></ion-icon>
-                <h2>{{report.description}}</h2>
-                <p>{{report.address}}</p>
-                <p>Situação: {{report.situation}}</p>
-                <div style="float: right;">
-                  <ion-icon *ngIf="report.positiveReactions>0" name="thumbs-up" style="color: #00CC11;"></ion-icon> 
-                  <ion-icon *ngIf="report.positiveReactions==0" name="thumbs-up" style="color: #AAAAAA;"></ion-icon> 
-                  <span *ngIf="report.positiveReactions>0" style="color: #00CC11;">{{report.positiveReactions}}</span>
-                  <span *ngIf="report.positiveReactions==0" style="color: #AAAAAA;">{{report.positiveReactions}}</span>
-                  &nbsp;
-                  <ion-icon *ngIf="report.negativeReactions>0" name="thumbs-down" style="color: #FF0000;"></ion-icon> 
-                  <ion-icon *ngIf="report.negativeReactions==0" name="thumbs-down" style="color: #AAAAAA;"></ion-icon> 
-                  <span *ngIf="report.negativeReactions>0" style="color: #FF0000;">{{report.negativeReactions}}</span>
-                  <span *ngIf="report.negativeReactions==0" style="color: #AAAAAA;">{{report.negativeReactions}}</span>
-                </div>
-            </button>
-        </ion-list>
-      </div>
-    <ion-fab right bottom>
-      <button [disabled]="!canReport()" ion-fab color="primary" (click)="report()"><ion-icon name="send"></ion-icon></button>
-    </ion-fab>
+  <div padding>
+    <ion-segment [(ngModel)]="sel">
+      <ion-segment-button value="mines">
+        Meus
+      </ion-segment-button>
+      <ion-segment-button value="all">
+        Outros
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  
+  <div [ngSwitch]="sel">
+    <ion-list *ngSwitchCase="'mines'">
+      <ion-item *ngIf="mineReports.length == 0"><p>Nenhum relato para enviado.</p></ion-item>
+      <button *ngFor="let report of mineReports" ion-item (click)="openDetails(report)">
+          <ion-icon name="{{report.icon}}" item-start></ion-icon>
+          <h2>{{report.description}}</h2>
+          <p>{{report.address}}</p>
+          <p>Situação: {{report.situation}}</p>
+          <div style="float: right;">
+            <ion-icon *ngIf="report.positiveReactions>0" name="thumbs-up" style="color: #00CC11;"></ion-icon> 
+            <ion-icon *ngIf="report.positiveReactions==0" name="thumbs-up" style="color: #AAAAAA;"></ion-icon> 
+            <span *ngIf="report.positiveReactions>0" style="color: #00CC11;">{{report.positiveReactions}}</span>
+            <span *ngIf="report.positiveReactions==0" style="color: #AAAAAA;">{{report.positiveReactions}}</span>
+            &nbsp;
+            <ion-icon *ngIf="report.negativeReactions>0" name="thumbs-down" style="color: #FF0000;"></ion-icon> 
+            <ion-icon *ngIf="report.negativeReactions==0" name="thumbs-down" style="color: #AAAAAA;"></ion-icon> 
+            <span *ngIf="report.negativeReactions>0" style="color: #FF0000;">{{report.negativeReactions}}</span>
+            <span *ngIf="report.negativeReactions==0" style="color: #AAAAAA;">{{report.negativeReactions}}</span>
+          </div>
+      </button>  
+    </ion-list>
+    <ion-list *ngSwitchCase="'all'">
+      <ion-item *ngIf="otherReports.length == 0"><p >Nenhum relato para mostrar.</p></ion-item>
+      <button *ngFor="let report of otherReports" ion-item (click)="openDetails(report)">
+          <ion-icon name="{{report.icon}}" item-start></ion-icon>
+          <h2>{{report.description}}</h2>
+          <p>{{report.address}}</p>
+          <p>Situação: {{report.situation}}</p>
+          <div style="float: right;">
+            <ion-icon *ngIf="report.positiveReactions>0" name="thumbs-up" style="color: #00CC11;"></ion-icon> 
+            <ion-icon *ngIf="report.positiveReactions==0" name="thumbs-up" style="color: #AAAAAA;"></ion-icon> 
+            <span *ngIf="report.positiveReactions>0" style="color: #00CC11;">{{report.positiveReactions}}</span>
+            <span *ngIf="report.positiveReactions==0" style="color: #AAAAAA;">{{report.positiveReactions}}</span>
+            &nbsp;
+            <ion-icon *ngIf="report.negativeReactions>0" name="thumbs-down" style="color: #FF0000;"></ion-icon> 
+            <ion-icon *ngIf="report.negativeReactions==0" name="thumbs-down" style="color: #AAAAAA;"></ion-icon> 
+            <span *ngIf="report.negativeReactions>0" style="color: #FF0000;">{{report.negativeReactions}}</span>
+            <span *ngIf="report.negativeReactions==0" style="color: #AAAAAA;">{{report.negativeReactions}}</span>
+          </div>
+      </button>
+    </ion-list>
+  </div>
+  <ion-fab right bottom>
+    <button [disabled]="!canReport()" ion-fab color="primary" (click)="report()"><ion-icon name="send"></ion-icon></button>
+  </ion-fab>
 </ion-content>

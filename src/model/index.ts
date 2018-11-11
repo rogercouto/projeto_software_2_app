@@ -10,3 +10,4 @@ export * from './reaction';
 export * from './update';
 export * from './notification';
 export * from './contact';
+export * from './answer';

@@ -35,7 +35,9 @@ export class MessagesPage {
         this.contacts = new Array<Contact>();
         for(let apiContact of apiContacts){
           const contact = ContactServiceProvider.create(apiContact);
-          this.contacts.push(contact);
+          if (MyApp.entity != null && contact.entityId == MyApp.entity.id){
+            this.contacts.push(contact);
+          }
         }
         loader.dismiss();
       },

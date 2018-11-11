@@ -243,6 +243,14 @@ export class MyApp {
     return null;
   }
 
+  static getEntity(entityId : number){
+    for (let entity of this.entities){
+      if (entity.id == entityId)
+        return entity;
+    }
+    return null;
+  }
+
   haveEntity():boolean{
     return MyApp.entity != null;
   }

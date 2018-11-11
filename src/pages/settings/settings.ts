@@ -32,6 +32,7 @@ export class SettingsPage {
   protected confirmError : boolean = false;
 
   protected valid : boolean = false;
+  protected entityName : string = null;
 
   constructor(
     public navCtrl: NavController,
@@ -43,6 +44,9 @@ export class SettingsPage {
   {
     this.user = this.userService.getLocalUser();
     this.name = this.user.name;
+    if (MyApp.entity != null){
+      this.entityName = MyApp.entity.name;
+    }
   }
 
   ionViewDidLoad() {

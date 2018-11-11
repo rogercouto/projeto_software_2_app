@@ -12,10 +12,18 @@
 
 </ion-header>
 <ion-content padding>
-  <h3><b>Assunto: </b>{{contact.subject}}</h3>
+  <h3><b>Assunto:</b>&nbsp;{{contact.subject}}</h3>
   <hr/>
   <p><b>Mensagem: </b></p>
   <p>{{contact.content}}</p>
   <p><b>Enviado para:</b></p>
-  <p><ion-icon name="pin"></ion-icon>{{entity.name}}</p>
+  <p><ion-icon name="pin"></ion-icon>&nbsp;{{entity.name}}</p>
+  <hr/>
+  <h2><b>Respostas</b></h2>
+  <p *ngIf="contact.answers.length==0">Nenhuma resposta ainda.</p>
+  <ion-item *ngFor="let answer of contact.answers">
+    <h3 ><b>Assunto:</b>&nbsp;{{answer.subject}}</h3><br/>
+    <h4><b>Mensagem: </b></h4><hr/>
+    <h4>{{answer.content}}</h4>
+  </ion-item>
 </ion-content>

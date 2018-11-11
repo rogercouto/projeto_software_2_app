@@ -15,6 +15,9 @@
 </ion-header>
 <ion-content padding>
   <p>Entidade:</p>
+  <p *ngIf="entityName != null">
+    <ion-icon name="pin"></ion-icon>&nbsp;<span>{{entityName}}</span>
+  </p>
   <button (click)="findLocal()" ion-button secondary block round>Procurar entidade</button>
   <p>Dados pessoais:</p>
   <form (ngSubmit)="save()">
@@ -28,10 +31,10 @@
       <ion-toggle [(ngModel)]="togglePass" name="togglePass" checked="false" (ionChange)="changeToggle()"></ion-toggle>
     </ion-item>
     <ion-item *ngIf="togglePass">
-      <ion-label color="primary" floating>Senha</ion-label>
+      <ion-label color="primary" floating>Nova senha</ion-label>
       <ion-input type="password" [(ngModel)]="password" name="password" (ionChange)="changePass()"></ion-input>
     </ion-item>
-    <div *ngIf="passError" style="color: red;margin-left: 20px;">Senha não pode ficar em branco!</div>
+    <div *ngIf="passError" style="color: red;margin-left: 20px;">Nova senha não pode ficar em branco!</div>
     <ion-item *ngIf="togglePass">
       <ion-label color="primary" floating>Confirmação</ion-label>
       <ion-input type="password" [(ngModel)]="confirmPass" name="confirmPass" (ionChange)="changeConf()"></ion-input>
