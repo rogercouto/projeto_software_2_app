@@ -40,7 +40,7 @@ export class ContactServiceProvider {
     headers.append('Content-Type','application/json');
     headers.append('Accept','application/json');
     headers.append('Authorization',MyApp.user.token.tokenType+' '+MyApp.user.token.accessToken);
-    return this.http.get(this.CONTACT_URL, {headers:headers})
+    return this.http.get(this.CONTACT_URL+"/"+contactId, {headers:headers})
       .map(response => response.json()) 
       .catch(error => Observable.throw(error));
   }

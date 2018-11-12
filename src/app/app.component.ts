@@ -56,13 +56,6 @@ export class MyApp {
     alertCtrl: AlertController,
     loadingCtrl: LoadingController
   ) {
-    platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
-      splashScreen.hide();
-      this.pushsetup(alertCtrl);
-    });
     //this.locationService.publishLocation();
     MyApp.alertController = alertCtrl;
     MyApp.loadingController = loadingCtrl;
@@ -156,6 +149,13 @@ export class MyApp {
       { index: 1, title: 'Relatos', icon: 'albums', component: ReportsPage, notificationId: 'not-rel', notifications: 0 },
       { index: 2, title: 'Mensagens', icon: 'text', component: MessagesPage, notificationId: 'not-msg', notifications: 0 }
     ];
+    platform.ready().then(() => {
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      statusBar.styleDefault();
+      splashScreen.hide();
+      this.pushsetup();
+    });
   }
 
   initializeApp() {
@@ -167,19 +167,14 @@ export class MyApp {
     });
   }
 
-  pushsetup(alertController : AlertController) {
+  pushsetup() {
     const options: PushOptions = {};
     const pushObject: PushObject = this.push.init(options);
-    pushObject.on("registration").subscribe((registration: any) => {});
+    pushObject.on("registration").subscribe((registration: any) => {
+      MyApp.presentAlert("Teste", JSON.stringify(registration));
+    });
     pushObject.on("notification").subscribe((notification: any) => {
-      if (notification.additionalData.foreground) {
-        let youralert = alertController.create({
-          title: notification.label,
-          message: notification.message
-        });
-        youralert.present();
-        MyApp.presentAlert(notification.label, notification.message);
-      }
+      MyApp.presentAlert("Teste", JSON.stringify(notification));
     });
   }
 

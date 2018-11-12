@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
-import { NotificationServiceProvider, ReportServiceProvider } from '../../providers';
+import { NotificationServiceProvider, ReportServiceProvider, ContactServiceProvider } from '../../providers';
 import { Notification, Report, Reaction, Update } from '../../model';
 import { MyApp } from '../../app/app.component';
 import { ReportDetailsPage } from '../report-details/report-details';
+import { MessageDetailsPage } from '../message-details/message-details';
 /**
  * Generated class for the NotificationsPage page.
  *
@@ -25,6 +26,7 @@ export class NotificationsPage {
     public navParams: NavParams, 
     public notificationService: NotificationServiceProvider,
     public reportService: ReportServiceProvider,
+    public contactService: ContactServiceProvider,
     public events: Events) 
     {
     const loader = MyApp.loadingController.create({content:"Aguarde..."});
@@ -40,7 +42,7 @@ export class NotificationsPage {
           notification.status = apiNotification.status;
           notification.userId = apiNotification.user_id;//useless?
           notification.reportId = apiNotification.report_id;
-          notification.messageId = apiNotification.message_id; //later use
+          notification.contactId = apiNotification.contact_id; //later use
           this.notifications.push(notification);
         }
         this.notifications = this.notifications.reverse();
@@ -132,6 +134,21 @@ export class NotificationsPage {
           MyApp.presentAlert("Erro", JSON.stringify(error));
         }
       );      
+    }else if (notification.contactId != null){
+      const resp = this.contactService.get(notification.contactId);
+      const loader = MyApp.loadingController.create({content:"Aguarde..."});
+      loader.present();
+      resp.subscribe(
+        apiContact=>{
+          const contact = ContactServiceProvider.create(apiContact);
+          loader.dismiss();
+          this.navCtrl.push(MessageDetailsPage, {contact: contact});
+        },
+        error=>{
+          loader.dismiss();
+          MyApp.presentAlert("Erro", JSON.stringify(error));
+        }
+      );
     }
   }
 

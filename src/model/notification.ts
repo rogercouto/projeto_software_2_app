@@ -7,7 +7,7 @@ export class Notification{
         public status?:number,
         public userId?:number,
         public reportId?:number,
-        public messageId?:number
+        public contactId?:number
     ){}
 
 
