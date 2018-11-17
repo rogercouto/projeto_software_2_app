@@ -99,7 +99,9 @@ export class EntityServiceProvider {
             if (element != null)
               element.textContent = entity.city.name+" - "+entity.city.state.uf;
             const element1 = document.getElementById('btnReport1');
-            element1.removeAttribute('disabled');
+            if (element1 != null){
+              element1.removeAttribute('disabled');
+            }
           }else{
             const element = document.getElementById('spanNoEntity');
               if (element != null)

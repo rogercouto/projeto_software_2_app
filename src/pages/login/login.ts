@@ -2,10 +2,12 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController, Events } from 'ionic-angular';
 
 import { RegisterPage } from '../';
-import { UserServiceProvider } from '../../providers';
+import { UserServiceProvider, NotificationServiceProvider } from '../../providers';
 import { User, Token } from '../../model';
 
 import { HomePage } from '../';
+import { MyApp } from '../../app/app.component';
+import { NotificationsPage } from '../notifications/notifications';
 /**
  * Generated class for the LoginPage page.
  *
@@ -35,7 +37,8 @@ export class LoginPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public userService : UserServiceProvider,
+    private userService : UserServiceProvider,
+    private notificationService: NotificationServiceProvider,
     private loadingCtrl : LoadingController,
     private alertCtrl: AlertController,
     private events : Events) 
@@ -79,7 +82,20 @@ export class LoginPage {
             this.userService.saveLocalUser(this.user);
             lc.dismiss();
             this.events.publish("user:login", this.user);
-            this.navCtrl.setRoot(HomePage);
+            this.notificationService.getNotifications();
+            const notResp = this.notificationService.getUnreadedCount();
+            notResp.subscribe(
+              count=>{
+                if (count > 0){
+                  this.navCtrl.setRoot(NotificationsPage);
+                }else{
+                  this.navCtrl.setRoot(HomePage);
+                }
+              },
+              error=>{
+                MyApp.presentAlert("Erro", error)
+              }
+            );
           }
         );
       },

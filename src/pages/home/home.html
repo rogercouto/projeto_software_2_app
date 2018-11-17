@@ -16,22 +16,28 @@
     <ion-label floating><ion-icon name="pin"></ion-icon>Sua localidade: </ion-label>
     <ion-input id="inputcity" [(ngModel)]="city" name="city" readonly="true"></ion-input>
   </ion-item>
-  
-  <!--
-  <ion-item class="nli" *ngIf="!isLocationSet()">
-    <ion-label floating><ion-icon name="pin"></ion-icon>Sua localidade: </ion-label>
-    <ion-select [(ngModel)]="entityId" (ionChange)="selectEntity()">
-      <ion-option *ngFor="let e of entities" value="{{e.id}}">{{e.name}}</ion-option>
-    </ion-select>
-  </ion-item>
-    <ion-icon name="pin"></ion-icon>Seu município:<span id="spancity">{{city}}</span>
-    
-    <ion-label floating><ion-icon name="pin"></ion-icon>Seu município: </ion-label>
-    <ion-input [(ngModel)]="city" name="city" readonly="true" (ionFocus)="refresh()" (ionBlur)="refresh()"></ion-input>
-  -->
   <br />
   <span *ngIf="cannotLocate() && !isLocationSet()" id="spanNoEntity" style="margin-left: 25px;color: red;">Não foi possível obter a localização!</span>
   <button *ngIf="cannotLocate() && !isLocationSet()" (click)="findLocal()" ion-button secondary block round>Procurar entidade</button>
   <span *ngIf="haveLocation()&&!canReport()" id="spanNoEntity" style="margin-left: 25px;color: red;">Nenhuma entidade nessa localidade!</span>
   <button id="btnReport1" [disabled]="!canReport()" (click)="reportPage()" (ionFocus)="refresh()" ion-button secondary block round>Relatar problema</button>
+  <p *ngIf="otherReports.length > 0">Relatos na região:</p>
+  <ion-list>
+    <button *ngFor="let report of otherReports" ion-item (click)="openDetails(report)">
+      <ion-icon name="{{report.icon}}" item-start></ion-icon>
+      <h2>{{report.description}}</h2>
+      <p>{{report.address}}</p>
+      <div style="float: right;">
+        <ion-icon *ngIf="report.positiveReactions>0" name="thumbs-up" style="color: #00CC11;"></ion-icon> 
+        <ion-icon *ngIf="report.positiveReactions==0" name="thumbs-up" style="color: #AAAAAA;"></ion-icon> 
+        <span *ngIf="report.positiveReactions>0" style="color: #00CC11;">{{report.positiveReactions}}</span>
+        <span *ngIf="report.positiveReactions==0" style="color: #AAAAAA;">{{report.positiveReactions}}</span>
+        &nbsp;
+        <ion-icon *ngIf="report.negativeReactions>0" name="thumbs-down" style="color: #FF0000;"></ion-icon> 
+        <ion-icon *ngIf="report.negativeReactions==0" name="thumbs-down" style="color: #AAAAAA;"></ion-icon> 
+        <span *ngIf="report.negativeReactions>0" style="color: #FF0000;">{{report.negativeReactions}}</span>
+        <span *ngIf="report.negativeReactions==0" style="color: #AAAAAA;">{{report.negativeReactions}}</span>
+      </div>
+  </button>
+  </ion-list>
 </ion-content>

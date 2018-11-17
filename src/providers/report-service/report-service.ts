@@ -104,43 +104,7 @@ export class ReportServiceProvider {
         const reports = new Array<Report>();
         for (let apiReport of apiReports){
           if (apiReport.closing_date == null){
-            const report = new Report();
-            report.id = apiReport.id;
-            report.description = apiReport.description;
-            report.address = apiReport.address;
-            report.photo = apiReport.photo;
-            report.userId = apiReport.user_id;
-            report.entityId = apiReport.entity_id;
-            report.categoryId = apiReport.category_id;
-            report.lat = apiReport.lat;
-            report.lng = apiReport.lng;
-            report.createdAt = new Date(apiReport.created_at);
-            report.status = apiReport.status;
-            report.positiveReactions = 0;
-            report.negativeReactions = 0;
-            for(let apiReaction of apiReport.positives){
-              const reaction = new Reaction();
-              reaction.id = apiReaction.id;
-              reaction.reaction = true;
-              reaction.comment = apiReaction.comment;
-              reaction.reportId = apiReaction.report_id;
-              reaction.userId = apiReaction.user_id;
-              report.reactions.push(reaction);
-              report.positiveReactions++;
-            }
-            for(let apiReaction of apiReport.negatives){
-              const reaction = new Reaction();
-              reaction.id = apiReaction.id;
-              reaction.reaction = false;
-              reaction.comment = apiReaction.comment;
-              reaction.reportId = apiReaction.report_id;
-              reaction.userId = apiReaction.user_id;
-              report.reactions.push(reaction);
-              report.negativeReactions++;
-            }
-            /*
-            console.log(apiReport.positives);
-            */
+            const report = ReportServiceProvider.create(apiReport);
             reports.push(report);
           }
         }
@@ -228,6 +192,44 @@ export class ReportServiceProvider {
     return this.http.get(this.REPORT_URL+"/"+reportId, {headers:headers})
     .map(response => response.json()) 
     .catch(error => Observable.throw(error));;
+  }
+
+  static create(apiReport : any):Report{
+    const report = new Report();
+    report.id = apiReport.id;
+    report.description = apiReport.description;
+    report.address = apiReport.address;
+    report.photo = apiReport.photo;
+    report.userId = apiReport.user_id;
+    report.entityId = apiReport.entity_id;
+    report.categoryId = apiReport.category_id;
+    report.lat = apiReport.lat;
+    report.lng = apiReport.lng;
+    report.createdAt = new Date(apiReport.created_at);
+    report.status = apiReport.status;
+    report.positiveReactions = 0;
+    report.negativeReactions = 0;
+    for(let apiReaction of apiReport.positives){
+      const reaction = new Reaction();
+      reaction.id = apiReaction.id;
+      reaction.reaction = true;
+      reaction.comment = apiReaction.comment;
+      reaction.reportId = apiReaction.report_id;
+      reaction.userId = apiReaction.user_id;
+      report.reactions.push(reaction);
+      report.positiveReactions++;
+    }
+    for(let apiReaction of apiReport.negatives){
+      const reaction = new Reaction();
+      reaction.id = apiReaction.id;
+      reaction.reaction = false;
+      reaction.comment = apiReaction.comment;
+      reaction.reportId = apiReaction.report_id;
+      reaction.userId = apiReaction.user_id;
+      report.reactions.push(reaction);
+      report.negativeReactions++;
+    }
+    return report;
   }
 
 }

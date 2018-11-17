@@ -93,6 +93,7 @@ export class MyApp {
       notResp.subscribe(
         count=>{
           this.notifications = count;
+          MyApp.user.notifications = count;
         },
         error=>{
           MyApp.presentAlert("Erro", error)

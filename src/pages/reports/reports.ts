@@ -23,7 +23,12 @@ export class ReportsPage {
   protected mineReports = new Array<Report>();
   protected otherReports = new Array<Report>();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public reportService: ReportServiceProvider, public events: Events) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public reportService: ReportServiceProvider, 
+    public events: Events) 
+    {
     const loading = MyApp.loadingController.create({content:"Aguarde..."});
     loading.present();
     this.reportService.publishAll();
@@ -46,7 +51,6 @@ export class ReportsPage {
   }
 
   openDetails(report: Report){
-    
     const resp = this.reportService.getUpdates(report);
     const loader = MyApp.loadingController.create({content:"Aguarde..."});
     loader.present();
@@ -71,40 +75,6 @@ export class ReportsPage {
         MyApp.presentAlert("Erro", error);
       }
     );
-    
-    /*
-    const resp = this.reportService.getReactions(report.id);
-    const loader = MyApp.loadingController.create({content:"Aguarde..."});
-    loader.present();
-    resp.subscribe(
-      apiReactions =>{
-        for (let apiReaction of apiReactions){
-          const reaction = new Reaction();
-          reaction.id = apiReaction.id;
-          reaction.reaction = apiReaction.reaction == 1? true : false;
-          reaction.comment = apiReaction.comment;
-          reaction.userId = apiReaction.user_id;
-          reaction.reportId = apiReaction.report_id;
-          report.reactions.push(reaction);
-        }
-        loader.dismiss();
-        this.navCtrl.push(ReportDetailsPage, {report: report});
-      },
-      error => {
-        loader.dismiss();
-        MyApp.presentAlert("Erro", error);
-      }
-      );
-     */ 
-    //this.navCtrl.push(ReportDetailsPage, {report: report});
-
-    /*
-    this.reportService.publishReactions(report);
-    this.events.subscribe('reactions:get', (reactions)=>{
-      report.reactions = reactions;
-      this.navCtrl.push(ReportDetailsPage, {report: report});
-    })
-    */
   }
 
   report(){
