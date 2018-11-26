@@ -60,7 +60,7 @@ export class ReportServiceProvider {
     formData.append('entity_id', report.entityId.toString());
     formData.append('category_id', report.categoryId.toString());
     formData.append('lat', report.lat.toString());
-    formData.append('lng', report.lng.toString());  
+    formData.append('lng', report.lng.toString()); 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Authorization', MyApp.user.token.tokenType+ ' ' + MyApp.user.token.accessToken );

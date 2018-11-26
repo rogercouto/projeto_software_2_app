@@ -13,8 +13,11 @@
 </ion-header>
 
 <ion-content padding>
+  <div style="text-align: center;">
+    <img src="assets/imgs/logo.png"/>
+  </div>
   <form (ngSubmit)="doLogin()">
-    <ion-item style="padding-top: 40%;">
+    <ion-item style="padding-top: 5%;">
       <ion-label color="primary" floating>E-mail</ion-label>
       <ion-input [(ngModel)]="email" name="email" (ionChange)="checkForm()"></ion-input>
     </ion-item>
