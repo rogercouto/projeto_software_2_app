@@ -23,7 +23,7 @@
   </ion-item>
   <div *ngIf='report.photo != ""'>
     <img class="rep-photo" *ngIf="report.photo!=null" 
-    src="http://cidadeunida.pipelinelab.com.br/storage/reports/{{report.photo}}"/>
+    src="http://cidadeunida.pipelinelab.com.br/storage/reports/thumb_570_515{{report.photo}}"/>
   </div>
   <ion-item>
     <p><b>Aberta em:</b> {{report.createdAt |  date:'dd/MM/yyyy'}}</p>
